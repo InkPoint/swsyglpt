@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.utils.dao.UtilsMapper">
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkUserGw" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,dm_gy_gwys t2
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t2.acl_station_id
+        and   instr(#{gwdmstr},'['||t2.gw_dm||']')>0
+        and   t0.user_id =#{userid}
+    </select>
+
+
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkPemission" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,acl_station t3
+             ,acl_station_role_xref t5
+             ,acl_role_resource_xref t6
+             ,acl_menu_resource t7
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t3.station_id
+        and   t3.station_id = t5.station_id
+        and   t5.role_id = t6.role_id
+        and   t6.menu_resource_id = t7.menu_resource_id
+        and   t7.RESOURCE_MODULE like '%'||#{uri}||'%'
+        and   t0.user_id =#{userid}
+    </select>
+    <!--获取属期日期-->
+    <select id="getSqRq"   resultType="java.util.HashMap">
+        select to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy-mm-dd') ssqq,
+        to_char(trunc(sysdate, 'Q') - 1, 'yyyy-mm-dd') ssqz,
+        to_char(sysdate, 'yyyy-mm-dd') dqrq
+        from dual
+    </select>
+
+    <!--获取水行政主管部门-->
+    <select id="getSxzzgbm"   resultType="java.util.HashMap">
+        select * from dm_gy_sxzzgbm t where t.yxbz ='Y' and t.sxzzgbm_dm='36101010000'
+    </select>
+
+    <!--获取当前季度的前一季度数-->
+    <!--获取取水计划-->
+    <select id="getQsjh"   resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select nvl(case
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '01-01',
+        'yyyy-mm-dd') then
+        sum(m.jan + m.feb + m.mar)
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '04-01',
+        'yyyy-mm-dd') then
+        sum(m.apr + m.may + m.jun)
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '07-01',
+        'yyyy-mm-dd') then
+        sum(m.jul + m.aug + m.sept)
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '10-01',
+        'yyyy-mm-dd') then
+        sum(m.oct + m.nov + m.dec)
+        end,
+        0) jhz,
+        case
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '01-01',
+        'yyyy-mm-dd') then
+        1
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '04-01',
+        'yyyy-mm-dd') then
+        2
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '07-01',
+        'yyyy-mm-dd') then
+        3
+        when add_months(trunc(sysdate, 'Q'), -3) =
+        to_date(to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy') ||
+        '10-01',
+        'yyyy-mm-dd') then
+        4
+        end jd
+        from sb_ysljhb j, sb_ysljhmxb m
+        where j.ysljhxh = m.ysljhxh
+        and j.yxbz = 'Y'
+        and m.yxbz = 'Y'
+        and m.ysljhz is null
+        and j.shzt_dm = '03'
+        and j.sbnd = to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy')
+        and j.sbry_dm = '${bsry}'
+    </select>
+</mapper>

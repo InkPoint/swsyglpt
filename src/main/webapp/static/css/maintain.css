@@ -1,0 +1,33 @@
+html, body, *
+{  
+	font-family: "Microsoft YaHei" ! important; 
+	font-size: 12px;
+}
+html, body
+{
+	margin: 0px;
+	padding: 0px;
+	background: #FFF;
+}
+div, ul, li, p, form, input, a
+{
+	font: 12px Arial, Helvetica, sans-serif;
+}
+a
+{
+	color:#03abf6;
+	text-decoration: none;
+}
+form
+{
+	margin:0px;
+	padding:10px 0 0 0;
+}
+h2
+{
+	font-size:14px; height:20px; line-height:20px; border-bottom:1px dotted #333; color:#000; margin: 0px;
+}
+p
+{
+	line-height: 200%;
+}

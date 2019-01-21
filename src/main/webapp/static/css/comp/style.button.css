@@ -1,0 +1,288 @@
+0023:.:0:3:14=48041e4b:16=47d21313:0033:component.css:02391:1:14=4FBDD206:16=47d21313:.accordion .accordion-header {
+    background: url('../images/unnav.png') top no-repeat !important;
+}
+.accordion .accordion-header-selected {
+    background: url('../images/acnav.png') top no-repeat !important;
+    height: 35px !important;
+    border: 0 !important;
+}
+.accordion-collapse {
+    background: url('../images/collapse.png') right bottom no-repeat !important;
+}
+.accordion-expand {
+    background: url('../images/expand.png') right bottom no-repeat !important;
+}
+.tabs {
+    background: url('../images/tabs_plain.png') repeat-x scroll left bottom transparent
+}
+.kwickbk {
+    padding: 10px 0 10px 10px;
+    overflow: auto;
+}
+.design_tab {
+    padding: 0;
+    overflow: hidden;
+}
+.mytab {
+    padding: 10px 0 10px 10px;
+    overflow: hidden;
+}
+.itb {
+    margin-right: 20px;
+    height: 30px;
+}
+.algotreebg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    margin: 64px 10px 10px 10px;
+    border: 1px solid #049cdb;
+    background: #FFFFFF;
+    overflow: auto;
+    padding: 4px;
+}
+.blockbg {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: 300px;
+    border: 1px solid #CCCCCC;
+    background: #FFF url('../images/blockbg.png') repeat;
+}
+.backimg{
+    background: #FFF url('../images/blockbg.png') repeat;
+}
+.tabscns {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    border: 1px solid #CCCCCC;
+    background: #FFFFFF;
+}
+.listcnt {
+    float: left;
+    width: 540px;
+    position: absolute;
+    bottom: 0;
+    top: 0
+}
+.mytab span.tha, span.thb, span.thc, span.thd, span.the, span.thf {
+    display: block;
+    color: #666;
+    float: left;
+    height: 30px;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: solid 2px #c05454;
+    margin: 2px;
+}
+.mytab ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.mytab ul li {
+    display: block;
+    float: left;
+    padding: 0;
+    margin: 0;
+    width: 546px;
+}
+.mytab ul li span {
+    float: left;
+    height: 24px;
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 12px;
+    color: #000;
+    border-bottom: dotted 1px #666;
+}
+.tha {
+    color: #FFFFFF !important;
+    background: #5279c0;
+    text-align: center;
+    width: 40px;
+}
+.mytab ul li span a {
+    line-height: 24px;
+}
+.img {
+    display: inline;
+    margin: 6px;
+}
+.thb {
+    width: 210px;
+}
+.thc {
+    width: 60px;
+}
+.thd {
+    width: 100px;
+}
+.the {
+    width: 60px;
+}
+.thf {
+    background-color: #FDFDFD;
+    height: 40px !important;
+    line-height: 40px !important;
+    width: 442px;
+}
+span.showflow {
+    display: block;
+    height: 50px !important;
+    float: right !important;
+    width: 40px;
+    background: #EEE url('../images/preflag.png') center no-repeat !important;
+    border: solid 1px #c05454 !important;;
+}
+.showflow:hover {
+    cursor: pointer;
+    background: #CCC url('../images/preflag.png') center no-repeat !important;
+}
+.showflow:active {
+    cursor: pointer;
+    background: #CCC url('../images/preflag.png') center no-repeat !important;
+}
+#preflowview {
+    position: absolute;
+    left: 555px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    min-height: 300px;
+    background: #EEE;
+    border: solid 1px #c05454;
+    padding: 20px;
+    overflow: auto;
+}
+#preflag {
+    position: relative;
+    display: none;
+    left: 0;
+    right: 0;
+    height: 400px;
+    overflow: auto;
+    border: solid 1px #666;
+    background: #FFF;
+    -moz-box-shadow: 0 0 4px rgba(24, 60, 125, .5);
+    -webkit-box-shadow: 0 0 4px rgba(24, 60, 125, 3);
+}
+a.l-btn-plain:hover {
+    background: url('../images/button_plain_hover.png') repeat-x scroll left bottom transparent;
+}
+.tabs li.tabs-selected a {
+    background: none repeat scroll 0 0 #FFFFFF !important;
+}
+.tabs li a.tabs-inner {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background: url("../images/tabs_enabled.png") repeat-x scroll left top;
+}
+.tabs-panels {
+    border: solid 1px #FFF;
+}
+.panel-body {
+    background: #FFFFFF;
+    border: solid 1px #FFF;
+}
+.panel-title, .panel-icon {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px #888888;
+    color: #2f4f4f;
+    margin: 4px 0 0 0;
+}
+.panel-with-icon {
+    padding-left: 24px;
+}
+.window-shadow {
+    background: #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    position: absolute;
+}
+.window {
+    background: #c8d1e3 url("../images/panel_title.png") repeat-x scroll 0 0 !important;
+    border: 1px solid #3D3D3D !important;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 5px;
+    position: absolute;
+}
+.window .window-body {
+    border: 1px solid #3D3D3D;
+    background: #EAEAEA;
+}
+.dialog-button {
+    background: #FFFFFF !important;
+    border-top: 1px dashed #328bab !important;
+}
+.thbg {
+    background: url('../images/unnav.png') repeat-x scroll left bottom transparent;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px #888888;
+    color: #2f4f4f;
+    margin: 4px 0 0 0;
+}
+.loinput {
+    width: 200px;
+    height: 24px;
+    background: #FFF;
+    border: 1px solid #778899;
+}
+.loinput:focus {
+    transition: border linear .2s, box-shadow linear .5s;
+    -moz-transition: border linear .2s, -moz-box-shadow linear .5s;
+    -webkit-transition: border linear .2s, -webkit-box-shadow linear .5s;
+    outline: none;
+    border-color: rgba(24, 60, 125, .75);
+    box-shadow: 0 0 8px rgba(24, 60, 125, .5);
+    -moz-box-shadow: 0 0 8px rgba(24, 60, 125, .5);
+    -webkit-box-shadow: 0 0 8px rgba(24, 60, 125, 3);
+}
+.moinput {
+    width: 200px;
+    height: 20px;
+    background: #FFF;
+    border: 1px solid #778899;
+}
+.moinput:focus {
+    transition: border linear .2s, box-shadow linear .5s;
+    -moz-transition: border linear .2s, -moz-box-shadow linear .5s;
+    -webkit-transition: border linear .2s, -webkit-box-shadow linear .5s;
+    outline: none;
+    border-color: rgba(24, 60, 125, .75);
+    box-shadow: 0 0 8px rgba(24, 60, 125, .5);
+    -moz-box-shadow: 0 0 8px rgba(24, 60, 125, .5);
+    -webkit-box-shadow: 0 0 8px rgba(24, 60, 125, 3);
+}
+.th-title {
+    padding: 2px 2px 2px 8px;
+    border-bottom: 1px solid #000;
+    background: #c8d1e3 url("../images/panel_title.png") repeat-x scroll 0 0 !important;
+    line-height: 28px;
+    height: 28px;
+}
+.accordion-listed {
+    margin: 0;
+    padding: 10px 0 10px 0;
+}
+.accordion-listed ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.accordion-listed ul li {
+    padding: 0px 0 0px 20px;
+    margin: 0;
+    height: 32px;
+ 

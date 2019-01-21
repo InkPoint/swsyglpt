@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.yslsb.dao.YsjhshxdMapper">
+
+    <!--用水量计划审核下达（初始化查询）-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="com.xasw.yslsb.model.YsjhshxdVO">
+        SELECT * FROM(
+            SELECT DISTINCT Q1.*,Q2.QSKSZD FROM (
+                SELECT DISTINCT T1.YSLJHXH
+                                ,T2.NSRMC
+                                ,T2.YSHDJXH
+                                ,T2.SHXYDM
+                                ,T2.FDDBRXM
+                                ,T1.YSLJHZ
+                                ,T1.YSLSHZ
+                                ,T1.SBRY_DM
+                                ,TO_CHAR(T1.SBRQ, 'yyyy-mm-dd HH24:mi:ss') SBRQ
+                                ,T1.SBND
+                                ,T1.SHJG_DM
+                                ,T1.SHRY_DM
+                                ,T1.SHRQ
+                                ,T3.SHZTMC
+                                ,T1.YXBZ
+                FROM SB_YSLJHB T1,DJ_YSHXXB T2,DM_GY_SHZT T3
+                  WHERE T1.SBRY_DM = T2.YSHZH(+)
+                     AND T1.SHZT_DM = T3.SHZT_DM(+))Q1,(SELECT DISTINCT * FROM (
+                        SELECT Z1.SYBH,Z1.QSKSZD,Z2.YSHDJXH FROM DJ_SYXXB Z1,DJ_YSHSYGXB Z2
+                                WHERE Z1.SYBH = Z2.SYBH(+))S1
+                                WHERE S1.YSHDJXH IS NOT NULL ) Q2
+                                WHERE Q1.YSHDJXH = Q2.YSHDJXH(+))W1 WHERE 1 = 1
+                  <if test="svo.nsrmc != null">
+                      and W1.NSRMC like '%' || #{svo.nsrmc,jdbcType=VARCHAR} || '%'
+                  </if>
+                  ORDER BY W1.SBRQ DESC
+    </select>
+    <!--根据用水量计划序号查询-->
+    <select id="conditionQuery" parameterType="java.util.HashMap" resultType="com.xasw.yslsb.model.YsjhshxdVO">
+      SELECT * FROM SB_YSLJHMXB T1
+           WHERE T1.YXBZ = 'Y'
+                <if test="svo.ysljhxh != null">
+                    AND T1.YSLJHXH LIKE '%' || #{svo.ysljhxh,jdbcType=VARCHAR} || '%'
+                </if>
+    </select>
+    <!--用水量计划(审核)-->
+    <update id="addData" parameterType="java.util.HashMap">
+      UPDATE SB_YSLJHB T1 SET T1.YSLSHZ = #{svo.yslshz,jdbcType=DOUBLE},
+                               T1.SHJG_DM = #{svo.shjg_dm,jdbcType=VARCHAR},
+                               T1.SHRY_DM = #{svo.shry_dm,jdbcType=VARCHAR},
+                               T1.SHRQ = SYSDATE,
+                               T1.SHZT_DM = '03'
+                        WHERE T1.YSLJHXH = #{svo.ysljhxh,jdbcType=VARCHAR}
+    </update>
+    <!--审核且新增(次年计划用水量)-->
+    <insert id="addAttach" parameterType="java.util.HashMap">
+      INSERT INTO SB_YSLJHMXB(YSLJHMXXH,YSLJHXH,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEPT,OCT,NOV,DEC,YSLSHZ,YXBZ)
+             VALUES(ysljhmxxh(),#{svo.ysljhxh,jdbcType=VARCHAR},
+             #{svo.jan,jdbcType=DOUBLE},#{svo.feb,jdbcType=DOUBLE},#{svo.mar,jdbcType=DOUBLE},#{svo.apr,jdbcType=DOUBLE},
+             #{svo.may,jdbcType=DOUBLE},#{svo.jun,jdbcType=DOUBLE},#{svo.jul,jdbcType=DOUBLE},#{svo.aug,jdbcType=DOUBLE},
+             #{svo.sept,jdbcType=DOUBLE},#{svo.oct,jdbcType=DOUBLE},#{svo.nov,jdbcType=DOUBLE},#{svo.dec,jdbcType=DOUBLE},
+             #{svo.yslshz,jdbcType=DOUBLE},'Y')
+    </insert>
+    <!--水源地点(菜单)-->
+    <select id="syddcd" parameterType="java.util.HashMap" resultType="com.xasw.yslsb.model.YsljhbsVO">
+       SELECT T.SYBH ID,T.QSKSZD TEXT FROM DJ_SYXXB T WHERE T.YXBZ = 'Y'
+    </select>
+</mapper>

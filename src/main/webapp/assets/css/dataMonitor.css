@@ -1,0 +1,751 @@
+
+.main {
+    background: none;
+}
+body,html {
+    width: 100%;
+    height: 100%;
+    overflow-x:hidden;
+}
+ .main .header {
+    position: relative;
+}
+.main .container {
+    min-width:1020px;
+    max-width:1920px;
+}
+.content1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+}
+/*内容区的侧边栏*/
+.aside {
+    width: 16%;
+    max-height: 920px;
+    /*min-height:865px;*/
+    text-align:center;
+    background-color: #282A31;
+    box-shadow: 2px 0 1px #0f0f0f;
+    border-top: 1px solid #0f0f0f;
+    /*position: relative;*/
+    /*overflow-y: hidden;*/
+    float: left;
+}
+@media screen and (max-width: 1920px){
+
+}
+/*侧边栏标题*/
+.aside h1 {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    font-size:18px;
+    line-height: 40px;
+    text-align:left;
+    color:#00ADEE;
+    padding-left: 27px;
+    background-color: #2C2E36;
+    border-bottom: 1px solid #0f0f0f;
+}
+/*侧边栏总分类*/
+.aside .aside-All {
+    width: 100%;
+    /*height: 700px;*/
+    display: inline-block;
+    margin:0 auto;
+    position: relative;
+    /*overflow: auto;*/
+}
+
+.aside-All .all {
+    display:inline-block;
+    width: 180px;
+    height: 30px;
+    line-height: 30px;
+    background-color:#373941;
+    margin-top: 15px;
+    border-radius:10px;
+    text-align:center;
+    position: relative;
+}
+
+    /*侧边栏中详细分类*/
+.aside-All .lists {
+    display: none;
+}
+
+.aside-All .lists li {
+    display: inline-block;
+    width: 150px;
+    /*height: 30px;*/
+    line-height: 30px;
+    margin-top: 15px;
+    border-radius:10px;
+    text-align:center;
+    position: relative;
+}
+.aside-All .lists li:last-child{
+    margin-bottom: 10px;
+    border-bottom: 1px solid transparent;
+}
+.aside-All .lists li span {
+    float: left;
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align:center;
+    background: url(../images/sprite.png) no-repeat -46px -135px ;
+    background-color: #373941;
+    border-radius:50%;
+    margin:0 5px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.aside-All .lists li:nth-child(2) span{
+    background: url(../images/sprite.png) no-repeat -95px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(3) span{
+    background: url(../images/sprite.png) no-repeat -136px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(4) span{
+    background: url(../images/sprite.png) no-repeat -184px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(5) span{
+    background: url(../images/sprite.png) no-repeat -236px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(6) span{
+    background: url(../images/sprite.png) no-repeat -276px -83px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(7) span{
+    background: url(../images/sprite.png) no-repeat -314px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(8) span{
+    background: url(../images/sprite.png) no-repeat -354px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(9) span{
+    background: url(../images/sprite.png) no-repeat 2px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(10) span{
+    background: url(../images/sprite.png) no-repeat -394px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(11) span{
+    background: url(../images/sprite.png) no-repeat -435px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(12) span{
+    background: url(../images/sprite.png) no-repeat -473px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(13) span{
+    background: url(../images/sprite.png) no-repeat 4px -133px ;
+    background-color: #373941;
+}
+.aside-All .lists li a {
+    margin-left: 40px;
+    display: block;
+    width: 130px;
+    height: 100%;
+    color:#fff;
+    font-size:14px;
+    background-color:#373941;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.aside-All .lists .listsIn li {
+    width: 100px;
+}
+.aside-All .lists .listsIn a {
+    width: 85px;
+    border-radius:7px;
+
+}
+.aside-All .all .list-title {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color:#fff;
+    font-size:14px;
+}
+
+.all .leftLine {
+    display: block;
+    width: 90px;
+    height: 1px;
+    position: absolute;
+    top:15px;
+    left:-85px;
+    background-color: #373941;
+}
+.aside-All .line2 {
+    /*top:65px;*/
+}
+.aside-All .line3 {
+    /*top:105px;*/
+}
+.aside-All .lists>li::before {
+    content:'';
+    display: block;
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    top:14px;
+    left:-45px;
+    background-color: #00ADEE;
+}
+.aside-All .all.active::before {
+    content:'';
+    display: block;
+    width: 100px;
+    height: 1px;
+    position: absolute;
+    top:14px;
+    left:-90px;
+    background-color: #00ADEE;
+}
+
+/*总分类下的横线*/
+.aside-All .all .line {
+    width: 1px;
+    height: 1000%;
+    background-color: #00ADEE;
+    position: absolute;
+    top:15px;
+    left:-30px;
+    display: none;
+}
+
+/*内容区右侧图表区*/
+.content1 .charts {
+    float: left;
+    height: 100%;
+   width:84%;
+}
+/*图表路径*/
+.content1 .charts .chart-title {
+    /*float: left;*/
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 30px;
+    font-size:16px;
+    color:#848689;
+}
+/*图表主体*/
+.content1 .charts .chart-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    /*overflow:hidden;*/
+}
+/*图表内容盒子*/
+.chart-content .contentBox {
+    min-width:43%;
+    /*height: 100%;*/
+    flex:1;
+    background-color: #282A31;
+    float: left;
+    margin:5px;
+
+}
+/*图表的名称*/
+.contentBox .chartName {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #848689;
+}
+.contentBox:nth-child(3) .chartName{
+    /*height: 60px;*/
+}
+
+.chartName h1 {
+    float: left;
+    text-align:left;
+    /*height: 100%;*/
+    line-height: 40px;
+    font-size:20px;
+    color: #acb8bf;
+    padding-left: 30px;
+}
+.contentBox:nth-child(3) .chartName h1,.contentBox:nth-child(4) .chartName h1{
+    /*float: none;*/
+    /*height:;*/
+}
+.contentBox:nth-child(3) .chartName p ,.contentBox:nth-child(4) .chartName p {
+    display: block;
+    float: left;
+    margin-left: 30px;
+
+}
+.contentBox:nth-child(3) .chartName div ,.contentBox:nth-child(4) .chartName div {
+    float: right;
+    display: block;
+    width: 180px;
+    font-size:12px;
+    color:#A9B4BB;
+    padding-left: 30px;
+    position: relative;
+
+}
+.contentBox:nth-child(3) .chartName div select,.contentBox:nth-child(4) .chartName div select {
+    float: right;
+    border: 1px solid #1E4B60;
+    background-color: #282A31;
+    border-radius:5px;
+    color:#9EA8B0;
+}
+.chartName a {
+    float: right;
+    /*text-align:left;*/
+    display: block;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    font-size:15px;
+    color:#A9B4BB;
+    padding-left: 30px;
+    position: relative;
+}
+
+.chartName a span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url(../images/help.png) no-repeat;
+    float: right;
+    position: absolute;
+    top:5px;
+    right:35px;
+}
+.contentBox:nth-child(3) .chartName a span ,.contentBox:nth-child(4) .chartName a span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url(../images/help.png) no-repeat;
+    float: right;
+    position: absolute;
+    top:5px;
+    right:35px;
+}
+    /*图表的信息*/
+.contentBox .chartPro {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+}
+.contentBox .chartPro p {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    font-size:13px;
+    color:#a7a3a3;
+    padding-left: 30px;
+}
+.contentBox .chartPro div {
+    float: right;
+    padding:0 5px;
+    width: 300px;
+}
+.contentBox .chartPro select {
+    /*display: block;*/
+    width: 70px;
+    height: 20px;
+    border: 1px solid #1E4B60;
+    background-color: #282A31;
+    border-radius:5px;
+    color:#9EA8B0;
+    text-align:center;
+    font-size:14px;
+    margin-left: 20px;
+}
+.contentBox .chartPro div span {
+    /*display: block;*/
+    width: 155px;
+    text-align:right;
+    padding-top: 5px;
+    font-size:13px;
+    color:#A9B4BB;
+}
+/*图表数据 后台数据*/
+.contentBox .chartIn {
+    width: 100%;
+    /*height: 100%;*/
+    /*padding: 30px 30px;*/
+    text-align:center;
+    display: block;
+}
+.contentBox .chartIn img {
+    /*display: block;*/
+    margin:0 auto;
+
+}
+.contentBox .chartIn .demo {
+    display: block;
+    margin:0 auto;
+    width: 100%;
+    /*height: 100%;*/
+}
+
+.chart-content .addIcon {
+    min-width:45%;
+    flex:1;
+    float: left;
+    /*height: 350px;*/
+    margin:10px;
+    /*line-height: 350px;*/
+    text-align:center;
+    background-color: #282A31;
+}
+.chart-content .addIcon a {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    margin:0 auto;
+    background: url(../images/addIcon.png) no-repeat center center;
+}
+
+.chartIn #chartdata {
+    width: 100%;
+    padding: 0 10px 10px 10px;
+}
+.chartIn #chartdata  ul li {
+    width: 100%;
+    display:flex;
+    height: 32px;
+    margin-top:20px;
+}
+.chartIn #chartdata  ul li span:first-child{
+    display: block;
+    float: left;
+    flex:1;
+    width: 32px;
+    height: 32px;
+    margin-left: 60px;
+    background: url(../images/di-01.png) no-repeat;
+}
+.chartIn #chartdata  ul li:nth-child(2) span:first-child {
+    background: url(../images/di-02.png) no-repeat;
+}
+.chartIn #chartdata  ul li:nth-child(3) span:first-child {
+    background: url(../images/di-03.png) no-repeat;
+}
+.chartIn #chartdata  ul li:nth-child(4) span:first-child {
+    background: url(../images/di-04.png) no-repeat;
+}
+.chartIn #chartdata  ul li:nth-child(5) span:first-child {
+    background: url(../images/di-05.png) no-repeat;
+}
+.chartIn #chartdata  ul li a {
+    display: block;
+    float: left;
+    width: 100px;
+    flex:5;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    font-size:15px;
+    color:#AFBBC4;
+    /*padding-left: 50px;*/
+
+}
+.chartIn #chartdata  ul li span:last-child {
+    display: block;
+    width: 325px;
+    flex:7;
+    height: 32px;
+    line-height: 32px;
+    background-color: #494E5B;
+    color:#AFBBC4;
+    float: right;
+    border-radius:5px;
+    margin-right: 150px;
+}
+
+/*采集总览图表*/
+.contentBox .leftChart {
+    float: left;
+    width: 35%;
+    height: 100%;
+    min-height:700px;
+    /*background-color: pink;*/
+    /*margin-left: 20px;*/
+    /*padding-top: 50px;*/
+    position: relative;
+    text-align:center;
+}
+.contentBox .leftChart span {
+    display: block;
+    width: 300px;
+    height: 300px;
+    line-height:323px;
+    text-align:center;
+    font-size:33px;
+    font-weight:bolder;
+    font-family: 'microsoft yahei';
+    color:#000;
+    background: url(../images/earth-big.png) no-repeat;
+    -webkit-background-size: 300px;
+    background-size: 300px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:-150px;
+    margin-left: -150px;
+    -moz-left:25% !important;
+
+
+}
+.contentBox .rightChart {
+   width:65%;
+    height: 100%;
+    min-height:700px;
+    float: left;
+    background: url(../images/datahj.png) no-repeat center center;
+    -webkit-background-size: 550px 400px;
+    background-size: 550px 400px;
+    /*line-height: 700px;*/
+    text-align:center;
+    position: relative;
+}
+
+.contentBox .rightChart h1{
+    width: 180px;
+    height: 45px;
+    line-height: 45px;
+    background-color: #ADADAD;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    border-radius:9px;
+    color:#fff;
+    margin:0 auto;
+    margin-top: 20px;
+}
+
+
+/*采集总览数据总量*/
+.total {
+    width: 600px;
+    /*height: 100px;*/
+    line-height: 120px;
+    margin:0 auto;
+    margin-top: 20px;
+    border-radius:10px;
+    text-align:center;
+    padding-left: 50px;
+}
+.total .number {
+    display: block;
+    width: 70px;
+    height: 100px;
+    line-height: 100px;
+    font-size:55px;
+    font-weight:bolder;
+    float: left;
+    text-align:center;
+    vertical-align: middle;
+}
+.total div.number{
+    width: 150px;
+}
+.total span.number{
+    width: 40px;
+}
+
+/*汇总分项显示*/
+.rightChart .mediaData,.rightChart .fieldData {
+    width: 50%;
+    -moz-column-width:200px;
+    min-height:500px;
+    height: 70%;
+    float: left;
+    /*margin-top: 200px;*/
+}
+.rightChart .fieldData {
+    float: right;
+}
+.rightChart img {
+    position: relative;
+}
+.rightChart .mediaData ul,.rightChart .fieldData ul{
+    width: 100%;
+    height: 100%;
+    transition:all 1s ease-in;
+    overflow: hidden;
+    position:relative;
+}
+ .mediaData ul li,.fieldData ul li {
+    width: 200px;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 5px;
+    position: absolute;
+    top:0;
+    right:0;
+    overflow: hidden;
+
+}
+.rightChart .mediaData ul li a,.fieldData ul li a {
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    line-height: 25px;
+    color:#fff;
+    font-size:14px;
+    border-radius:8px;
+    text-align:center;
+    background-color: rgba(105, 104, 102, 0.74);
+}
+.fieldData ul li:nth-child(4) a{
+    font-size:12px;
+    width: 70px;
+}
+.rightChart .mediaData ul li span,.fieldData ul li span {
+    display: inline-block;
+    width: 80px;
+    height: 18px;
+    line-height: 20px;
+    text-align:center;
+    font-size:14px;
+    border: 1px solid #fff;
+    border-radius:8px;
+}
+
+.mediaData ul li:nth-child(1){
+    top:35% ;
+    right:5%;
+}
+.mediaData ul li:nth-child(2){
+    top:43%;
+    right:23%;
+}
+.mediaData ul li:nth-child(3){
+    top:50% ;
+    right:35%;
+}
+.mediaData ul li:nth-child(4){
+    top:60% ;
+    right:43%;
+}
+.mediaData ul li:nth-child(5){
+    top:72% ;
+    right:48%;
+}
+.mediaData ul li:nth-child(6){
+    top:83% ;
+    right:45%;
+}
+.fieldData ul li:nth-child(1){
+    top:35%;
+    left:5%;
+}
+.fieldData ul li:nth-child(2){
+    top:43%;
+    left:23%;
+}
+.fieldData ul li:nth-child(3){
+    top:50%;
+    left:35%;
+}
+.fieldData ul li:nth-child(4){
+    top:60%;
+    left:43%;
+}
+.fieldData ul li:nth-child(5){
+    top:72%;
+    left:48%;
+}
+.fieldData ul li:nth-child(6){
+    top:83%;
+    left:47%;
+}
+
+.rightChart ul li:nth-child(6) span {
+    border-color: #696866;
+    color:#696866;
+}
+.rightChart ul li:nth-child(5) span {
+    border-color: #696866;
+    color:#696866;
+}
+.rightChart ul li:nth-child(4) span {
+    border-color: #777777;
+    color:#777777;
+}
+.rightChart ul li:nth-child(3) span {
+    border-color: #ADADAD;
+    color:#ADADAD;
+}
+.rightChart ul li:nth-child(2) span {
+    border-color: #CACCCD;
+    color:#CACCCD;
+}
+.rightChart h4 {
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    text-align:center;
+    font-size:16px;
+    border: 1px solid #5e91ff;
+    border-radius:15px;
+    display: inline-block;
+    margin:0 auto;
+    margin-top:10px;
+}
+.rightChart h4 a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color:#fff;
+}
+.rightChart .field {
+    margin-left: 20px;
+    margin-right:20px;
+}
+
+/*@media screen and(max-width: 1800px){*/
+    /*.main {*/
+        /*width:1024px;*/
+    /*}*/
+    /*.contentBox .rightChart {*/
+        /*background-color: #fff;*/
+    /*}*/
+    /*.contentBox .leftChart span {*/
+        /*width: 250px;*/
+        /*height: 250px;*/
+        /*-webkit-background-size: 250px;*/
+        /*background-size: 250px;*/
+    /*}*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

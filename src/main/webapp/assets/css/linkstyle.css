@@ -1,0 +1,7 @@
+﻿.page-main .item-active {
+	box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+	transform: translate3d(0, -2px, 0);
+}
+/* 右侧更多内容 */
+
+

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.jbxxwh.dao.CsbdsbsMapper">
+
+    <!--用水户（初始化查询）-->
+    <select id="userInitQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT T1.CSBDJXH
+                  ,T1.YSHDJXH
+                  ,T2.QSKSZD-- 水源地点
+                  ,T1.SBWZBH--水表位置编号
+                  ,T1.SBBH--水表编号
+                  ,T1.YBDS--原表底数
+                  ,T1.SBZT_DM--水表状态代码
+                  ,T3.SBZTMC --水表状态名称
+                  ,T1.XBDS
+                  ,T1.SBGZLX_DM
+                  ,T1.SBGZYY
+                  ,T1.SBRY_DM--上报人员代码
+                  ,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+                  ,T1.CZLX_DM
+                  ,T1.DSZPURL
+                  ,T1.SHZT_DM
+                  ,T1.SHJG
+                  ,T1.SHJG_DM
+                  ,T1.SHRY_DM
+                  ,T1.SHRQ
+                  ,T1.XGRY_DM
+                  ,T1.XGRQ
+                  ,T1.YXBZ
+                  ,T1.YBCBRQ
+                  ,T1.XBCBRQ FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3
+                                 WHERE T1.YXBZ = 'Y'
+                                       AND T1.SYBH = T2.SYBH(+)
+                                       AND T1.SBZT_DM = T3.SBZT_DM(+)
+                                       AND T1.SBRY_DM = #{svo.sbry_dm,jdbcType=VARCHAR}
+                                       ORDER BY T1.SBRQ DESC
+    </select>
+    <!--报送-->
+    <insert id="submission" parameterType="java.util.HashMap">
+      INSERT INTO DJ_CSBDSSB
+       (CSBDJXH,SYBH,SBWZBH,SBBH,YBDS,SBRQ,DSZPURL,SBZT_DM,SBRY_DM,YXBZ,XBCBRQ,SHZT_DM,CZLX_DM)
+       VALUES (CSBDJXH(),#{svo.sybh,jdbcType=VARCHAR},#{svo.sbwzbh,jdbcType=VARCHAR}
+        ,#{svo.sbbh,jdbcType=VARCHAR},#{svo.ybds,jdbcType=DOUBLE},sysdate
+        ,#{svo.dszpurl,jdbcType=VARCHAR},'01',#{svo.sbry_dm,jdbcType=VARCHAR},'Y',#{svo.xbcbrq,jdbcType=TIMESTAMP},'01','02')
+    </insert>
+    <!--换表-->
+    <insert id="change" parameterType="java.util.HashMap">
+       INSERT INTO DJ_CSBDSSB
+       (CSBDJXH,SYBH,SBWZBH,SBBH,YBDS,SBRQ,SBZT_DM,SBRY_DM,YXBZ,SBGZLX_DM,SBGZYY,XBCBRQ,SHZT_DM,CZLX_DM)
+       VALUES (CSBDJXH(),#{svo.sybh,jdbcType=VARCHAR},#{svo.sbwzbh,jdbcType=VARCHAR}
+        ,#{svo.sbbh,jdbcType=VARCHAR},#{svo.ybds,jdbcType=DOUBLE},sysdate,'02'
+        ,#{svo.sbry_dm,jdbcType=VARCHAR},'Y',#{svo.sbgzlx_dm,jdbcType=CHAR},#{svo.sbgzyy,jdbcType=VARCHAR},#{svo.xbcbrq,jdbcType=TIMESTAMP},'01','01')
+    </insert>
+    <!--报送校验-->
+    <select id="certifiedCheck" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.CsbdsbsVO">
+        SELECT * FROM DJ_CSBDSSB T1
+              WHERE T1.SBRY_DM = #{svo.sbry_dm,jdbcType=VARCHAR}
+                <if test="svo.sbbh != null">
+                    AND T1.SBBH = #{svo.sbbh,jdbcType=VARCHAR} AND T1.SHZT_DM in ('01','03')
+                </if>
+    </select>
+    <!--水源地点(菜单)-->
+    <select id="syddcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.CsbdsbsVO">
+        SELECT Q1.ID,Q1.TEXT FROM (
+            SELECT S1.*,S2.YSHZH FROM (
+                   SELECT T1.SYBH ID,T1.QSKSZD TEXT,T2.YSHDJXH FROM DJ_SYXXB T1,DJ_YSHSYGXB T2
+                          WHERE T1.SYBH = T2.SYBH(+))S1,DJ_YSHXXB S2
+                          WHERE S1.YSHDJXH = S2.YSHDJXH(+))Q1
+                          WHERE 1 = 1
+                                AND Q1.YSHDJXH IS NOT NULL
+                                AND Q1.YSHZH IS NOT NULL
+                                AND Q1.YSHZH LIKE '%' || #{svo.yshzh,jdbcType=VARCHAR} || '%'
+    </select>
+    <!--水表故障(菜单)-->
+    <select id="sbgzcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.CsbdsbsVO">
+        SELECT T.SBGZ_DM ID,T.SBGZMC TEXT FROM DM_GY_SBGZ T  WHERE T.YXBZ = 'Y'
+    </select>
+</mapper>

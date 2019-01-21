@@ -1,0 +1,37 @@
+.window {
+	cursor:pointer;
+	box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+}
+.window {
+	border:0.1em dotted #d4e06b;
+	opacity:0.8;
+	width:14em; height:4em;
+	z-index:20;
+	color:black;
+	padding-top:0.9em;
+	font-size:0.9em;
+	text-align:center;
+	background-color:#ced7f7;
+}
+
+.container {
+border:1px dashed #567;
+float:left;
+margin-left:0;
+position:relative;
+overflow:scroll;
+cursor:move;
+}
+
+#window1 { left:20em;}
+#window2 { top:6em; left:21em;left:10em;top:12em;}
+#window3 { top:6em;left:40em;top:12em;}
+#window4 { top:6em; left:45em;left:4em;top:12em;}
+#window5 {top:27em;left:18em;left:22em;top:24em;}
+#window6 {top:35em;left:42em;left:47em;top:24em;}
+
+._jsPlumb_connector {
+	z-index:0;
+}

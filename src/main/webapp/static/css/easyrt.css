@@ -1,0 +1,42 @@
+.easyrt {border:1px solid #B3B3B3;}
+.easyrt .tool-bar {height:30px;background:#D8D7D6 url(ico_toolbar.png) 0 -490px repeat-x;margin:0;padding:0;border-bottom:1px solid #b5b5b5;overflow:hidden;zoom:1;}
+.easyrt .tool-bar li {list-style:none;float:left;padding:5px 5px 3px 5px;cursor:default;overflow:hidden;zoom:1;}
+.easyrt .tool-bar li a {display:block;width:20px;height:20px;background:url(ico_toolbar.png) 0 0 no-repeat;border:none;cursor:pointer;}
+.easyrt .tool-bar .split-bar {width:0;font-size:0;height:100%;padding:5px 0 3px;margin:0 1px;border-left:1px solid #BBB;border-right:1px solid #FFF;}
+.easyrt .tool-bar .ico-bold a {background-position:0 0;}
+.easyrt .tool-bar .ico-italic a {background-position:0 -20px;}
+.easyrt .tool-bar .ico-u a {background-position:0 -40px;}
+.easyrt .tool-bar .ico-fc a {background-position:0 -60px;}
+.easyrt .tool-bar .ico-bc a {background-position:0 -80px;}
+.easyrt .tool-bar .ico-face a {background-position:0 -100px;}
+.easyrt .tool-bar .ico-url a {background-position:0 -120px;}
+.easyrt .tool-bar .ico-ta a {background-position:0 -140px;}
+.easyrt .tool-bar .ico-li a {background-position:0 -160px;}
+.easyrt .tool-bar .ico-od a {background-position:0 -180px;}
+.easyrt .tool-bar .ico-id a {background-position:0 -200px;}
+.easyrt .tool-bar .ico-img a {background-position:0 -340px;}
+.easyrt .tool-bar .ico-clear a {background-position:0 -320px;}
+.easyrt .tool-bar .ico-source a {background-position:0 -360px;}
+.easyrt .tool-bar .ico-preview a {background-position:0 -400px;}
+.easyrt .tool-bar .ico-family a {background-position:0 -420px;}
+.easyrt .tool-bar .ico-size a {background-position:0 -440px;}
+.easyrt .tool-bar .ico-table a {background-position:0 -460px;}
+.easyrt .ico-left {background:url(ico_toolbar.png) 0 -220px no-repeat;line-height:20px;padding-left:25px;}
+.easyrt .ico-center {background:url(ico_toolbar.png) 0 -240px no-repeat;line-height:20px;padding-left:25px;}
+.easyrt .ico-right {background:url(ico_toolbar.png) 0 -260px no-repeat;line-height:20px;padding-left:25px;}
+.easyrt .ico-ol {background:url(ico_toolbar.png) 0 -280px no-repeat;line-height:20px;padding-left:25px;}
+.easyrt .ico-ul {background:url(ico_toolbar.png) 0 -300px no-repeat;line-height:20px;padding-left:25px;}
+.easyrt .editor {vertical-align:middle;width:100%;height:200px;border:none;overflow:auto;}
+.easyrt textarea {margin:0;padding:0;}
+.easyrt .textbox {position:absolute;left:0;top:0;visibility:hidden;}
+.easyrt .popup {position:absolute;left:0;top:0;background:#fff;border:1px solid #716E67;padding:8px;z-index:100;visibility:hidden;overflow:hidden;}
+.easyrt .popup a {text-decoration:none;color:#000;font-size:12px;display:block;}
+.easyrt .popup a:hover {background-color:#eee;}
+.easyrt .popup .colorpad {width:270px;cursor:pointer;overflow:hidden;zoom:1;}
+.easyrt .popup .colorpad div {width:90px;float:left;}
+.easyrt .popup .colorpad div a {float:left;width:15px;height:15px;font-size:0;}
+.easyrt .popup .colorpad .normalcolor {clear:left;margin-top:5px;padding-left:15px;background:url(ico_toolbar.png) -4px -382px no-repeat;}
+.easyrt .popup .source p {text-align:right;margin:0;padding:0;height:30px;overflow:hidden;zoom:1;}
+.easyrt .popup .source p button {margin:5px 0 0 5px;}
+.easyrt .popup .facepad {width:250px;overflow:hidden;zoom:1;cursor:pointer;}
+.easyrt .popup .facepad a {float:left;width:25px;height:25px;border:1px solid #f9f9f9;font-size:0;color:#fff;}

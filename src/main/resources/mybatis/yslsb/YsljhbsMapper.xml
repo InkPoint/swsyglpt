@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.yslsb.dao.YsljhbsMapper">
+
+    <!--用水量计划(报送)-->
+    <insert id="addData" parameterType="java.util.HashMap">
+     INSERT INTO SB_YSLJHB(YSLJHXH,SBRY_DM,SBRQ,SBND,SHZT_DM,YXBZ,YSLJHZ,SYDJXH)
+           VALUES (#{svo.ysljhxh,jdbcType=VARCHAR},#{svo.sbry_dm,jdbcType=VARCHAR},sysdate
+                  ,#{svo.sbnd,jdbcType=CHAR},'01','Y',#{svo.ysljhz,jdbcType=DOUBLE},#{svo.sydjxh,jdbcType=VARCHAR})
+    </insert>
+    <!--新增附件信息(次年计划用水量)-->
+    <insert id="addAttach" parameterType="java.util.HashMap">
+      INSERT INTO SB_YSLJHMXB(YSLJHMXXH,YSLJHXH,JAN,FEB,MAR,APR,MAY,JUN,
+                        JUL,AUG,SEPT,OCT,NOV,DEC,YSLJHZ,YXBZ)
+             VALUES(ysljhmxxh(),#{svo.ysljhxh,jdbcType=VARCHAR},
+             #{svo.jan,jdbcType=DOUBLE},#{svo.feb,jdbcType=DOUBLE},#{svo.mar,jdbcType=DOUBLE},#{svo.apr,jdbcType=DOUBLE},
+             #{svo.may,jdbcType=DOUBLE},#{svo.jun,jdbcType=DOUBLE},#{svo.jul,jdbcType=DOUBLE},#{svo.aug,jdbcType=DOUBLE},
+             #{svo.sept,jdbcType=DOUBLE},#{svo.oct,jdbcType=DOUBLE},#{svo.nov,jdbcType=DOUBLE},#{svo.dec,jdbcType=DOUBLE},
+             #{svo.ysljhz,jdbcType=DOUBLE},'Y')
+    </insert>
+    <!--水源地点(菜单)-->
+    <select id="syddcd" parameterType="java.util.HashMap" resultType="com.xasw.yslsb.model.YsljhbsVO">
+       SELECT T.SYBH ID,T.QSKSZD TEXT FROM DJ_SYXXB T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--用水户取水地点（菜单）-->
+    <select id="yshqsddcd" parameterType="java.util.HashMap" resultType="com.xasw.yslsb.model.YsljhbsVO">
+        SELECT C1.SYDJXH ID,C1.QSKSZD TEXT FROM (
+            SELECT B1.*,B2.* FROM(
+                      SELECT A1.*,A2.YSHDJXH FROM DJ_SYXXB A1,DJ_YSHSYGXB A2
+                             WHERE 1 = 1 AND A1.YXBZ = 'Y' AND A1.SYBH = A2.SYBH(+))B1,DJ_YSHXXB B2
+                                   WHERE B1.YSHDJXH IS NOT NULL
+                                         AND B1.YSHDJXH = B2.YSHDJXH(+))C1 WHERE 1 = 1
+                                             AND C1.YSHZH = #{svo.yshzh,jdbcType=VARCHAR}
+    </select>
+</mapper>

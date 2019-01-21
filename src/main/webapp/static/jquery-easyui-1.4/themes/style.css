@@ -1,0 +1,290 @@
+.logo {
+	padding-left: 5px;
+	background: url(../../../static/images/logo.png) no-repeat top;
+	border:0;
+	width: 240px;
+	height: 60px;
+	cursor: pointer;
+}
+
+.sidebar-toggle-box {
+	float: left;
+	margin-left: 15px;
+	padding-left: 15px;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	height:70px;
+	width:50px;
+}
+.sidebar-toggle-box .fa-bars {
+	cursor: pointer;
+	display: inline-block;
+	font-size: 20px;
+}
+/*------------------------------------------------------------------
+[3. Sidebar]
+*/
+ul li {
+	list-style: none;
+}
+
+#sidebar {
+	width: 100%;
+	height: 100%;
+	position: inherit;
+	background: #424f63!important;
+}
+#sidebar ul li {
+	position: relative;
+}
+#sidebar .sub-menu>.sub li {
+	padding-left: 20px;
+}
+#sidebar .sub-menu>.sub li:last-child {
+	padding-bottom: 5px;
+}
+.dcjq-icon {
+	height: 17px;
+	width: 17px;
+	display: inline-block;
+	background: url(../../images/nav-expand.png) no-repeat top;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	position: absolute;
+	right: 10px;
+	top: 6px;
+}
+.actives .dcjq-icon {
+	background: url(../../images/nav-expand.png) no-repeat bottom;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+.nav-collapse.collapse {
+	display: inline;
+}
+ul.sidebar-menu, ul.sidebar-menu li ul.sub {
+	margin: -2px 0 0;
+	padding: 0;
+}
+ul.sidebar-menu {
+	margin-top: 5px;
+}
+#sidebar>ul>li>ul.sub {
+	display: none;
+}
+#sidebar>ul>li.active>ul.sub, #sidebar>ul>li>ul.sub>li>a {
+	display: block;
+}
+ul.sidebar-menu li ul.sub li {
+	background: #35404D;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+ul.sidebar-menu li ul.sub li:last-child {
+	border-radius: 0 0 4px 4px;
+	-webkit-border-radius: 0 0 4px 4px;
+}
+ul.sidebar-menu li ul.sub li a {
+	font-size: 14px;
+	font-weight: 400;
+	font-family: Verdana, 微软雅黑,黑体;
+	padding: 5px 0px;
+	line-height: 20px;
+	height: 20px;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+	color: #fff;
+}
+ul.sidebar-menu li ul.sub li a:hover, ul.sidebar-menu li ul.sub li.active a {
+	color: #72d0eb;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+	display: block;
+}
+ul.sidebar-menu li {
+	margin-bottom: 5px;
+}
+ul.sidebar-menu li.sub-menu {
+	line-height: 15px;
+}
+ul.sidebar-menu li a .span-sidebar {
+	position: absolute;
+	right: 30px;
+	top: 13px;
+}
+ul.sidebar-menu li a span {
+	display: inline-block;
+}
+ul.sidebar-menu li a {
+	color: #ffffff;
+	text-decoration: none;
+	display: block;
+	padding: 10px 0 10px 5px;
+	font-size: 15px;
+	font-weight: 500;
+	font-family: Verdana, 微软雅黑,黑体;
+	outline: none;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+	background: #35404d;
+	color: #72d0eb;
+	display: block;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+ul.sidebar-menu li a i {
+	font-size: 15px;
+	padding-right: 6px;
+}
+ul.sidebar-menu li a:hover i, ul.sidebar-menu li a:focus i {
+	color: #72d0eb;
+}
+ul.sidebar-menu li a.active i {
+	color: #72d0eb;
+}
+.mail-info, .mail-info:hover {
+	margin: -3px 6px 0 0;
+	font-size: 11px;
+}
+
+
+
+/*sidebar中tabs设置 begin*/
+#sidebar .tabs-header {
+	border-width: 0px;
+	border-style: solid;
+	border-bottom-width: 0;
+	position: relative;
+	padding: 0;
+	padding-top: -10px;
+	overflow: hidden;
+}
+
+#sidebar .tabs li a.tabs-inner {
+	display: inline-block;
+	text-decoration: none;
+	margin: 0;
+	padding: 0 10px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	white-space: nowrap;
+	border-width: 1px;
+	border-style: solid;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-radius: 0 0 0 0;
+}
+
+#sidebar .tabs {
+	list-style-type: none;
+	height: 26px;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 0.3px;
+	width: 50000px;
+	border-style: solid;
+	border-width: 0 0 1px 0;
+}
+/*设置菜单tabs字体大小  easyui tabs title 字体大小*/
+#sidebar .tabs-title{
+	font-size: 16px;
+	font-family: Verdana, 微软雅黑,黑体;
+	font-weight: 800;
+}
+/*设置菜单tabs间距  */
+#sidebar .tabs li{
+	float: left;
+	display: inline-block;
+	margin: 0 -1px -1px 0;
+	padding: 0;
+	position: relative;
+	border: 0;
+}
+#sidebar .tabs-icon {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	font-size: 20px;
+	left: 15px;
+	top: 45%;
+	margin-top: -8px;
+}
+/*sidebar中tabs设置 begin*/
+
+/*设置easyui_layout_main_center_tabs中tabs字体大小*/
+#easyui_layout_main_center_tabs .tabs-title{
+	font-size: 14px;
+	font-family: Verdana, 微软雅黑,黑体;
+	font-weight: 600;
+}
+
+/*登录人、机构字体设置   begin*/
+#easyui_layout_main_north .l-btn-text{
+	font-size: 15px;
+	font-family: Verdana, 微软雅黑,黑体;
+	font-weight: 500;
+}
+/*登录人、机构字体设置   end*/
+
+/*回到首页--注销系统menu设置   begin*/
+#easyui_layout_main_north_mm .menu-icon {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	left: 0px;
+	top: 45%;
+	margin-top: -8px;
+	font-size: 20px;
+}
+#easyui_layout_main_north_mm .menu-text {
+	height: 28px;
+	line-height: 28px;
+	float: left;
+	padding-left: 40px;
+	font-size: 15px;
+	font-family: Verdana,微软雅黑,黑体;
+	font-weight: 500;
+}
+/*回到首页--注销系统menu设置   end*/
+/*切换主题menu设置   begin*/
+#easyui_layout_main_north_theme .menu-text{
+	height: 28px;
+	line-height: 28px;
+	float: left;
+	padding-left: 40px;
+	font-size: 14px;
+	font-family: Verdana,微软雅黑,黑体;
+	font-weight: 500;
+}
+
+#easyui_layout_main_north_theme .menu-icon {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	left: 0px;
+	top: 45%;
+	margin-top: -8px;
+	font-size: 20px;
+}
+/*切换主题menu设置   end*/
+

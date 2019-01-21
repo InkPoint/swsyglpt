@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.dao.SyxxzhcxMapper">
+    <!--税款同比环比 贺明超-->
+    <select id="skjnjetbhbQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select a.*,b.*,
+        decode(b.upskjnje1q,0,0,round(a.currskjnje1q/b.upskjnje1q*100,2)) tb1,
+        decode(b.upskjnje2q,0,0,round(a.currskjnje2q/b.upskjnje2q*100,2)) tb2,
+        decode(b.upskjnje3q,0,0,round(a.currskjnje3q/b.upskjnje3q*100,2)) tb3,
+        decode(b.upskjnje4q,0,0,round(a.currskjnje4q/b.upskjnje4q*100,2)) tb4,
+        decode(b.upskjnje4q,0,0,round(a.currskjnje1q/b.upskjnje4q*100,2)) hb1,
+        decode(a.currskjnje1q,0,0,round(a.currskjnje2q/a.currskjnje1q*100,2)) hb2,
+        decode(a.currskjnje2q,0,0,round(a.currskjnje3q/a.currskjnje2q*100,2)) hb3,
+        decode(a.currskjnje3q,0,0,round(a.currskjnje4q/a.currskjnje3q*100,2)) hb4
+         from
+        (select
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('01','02','03') then nvl(t1.skjnje, 0) else 0 end)),0) as currskjnje1q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('04','05','06') then nvl(t1.skjnje, 0) else 0 end)),0) as currskjnje2q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('07','08','09') then nvl(t1.skjnje, 0) else 0 end)),0) as currskjnje3q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('10','11','12') then nvl(t1.skjnje, 0) else 0 end)),0) as currskjnje4q
+          from jh_skslxxjhb t1,hd_yslbshd t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz='Y'
+           and t1.hdsbh=t2.hdsbh
+            <if test="svo.ssnf==null or svo.ssnf == ''">
+                and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+            </if>
+            <if test="svo.ssnf!=null and svo.ssnf != ''">
+                and to_char(t1.skssqq, 'yyyy') in(#{svo.ssnf})
+            </if>
+            <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+                and t2.syqy in(  #{svo.syqydm})
+            </if>
+            <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+                and t2.sylx in(  #{svo.sylxdm})
+            </if>
+
+            <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+                and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+            </if>
+            <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+                and t2.tsyslb in(  #{svo.tsyslxdm})
+            </if>
+        ) a,
+        (
+        select
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('01','02','03') then nvl(t1.skjnje, 0) else 0 end)),0) as upskjnje1q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('04','05','06') then nvl(t1.skjnje, 0) else 0 end)),0) as upskjnje2q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('07','08','09') then nvl(t1.skjnje, 0) else 0 end)),0) as upskjnje3q,
+        nvl(sum((case when to_char(t1.skssqq,'mm') in ('10','11','12') then nvl(t1.skjnje, 0) else 0 end)),0) as upskjnje4q
+          from jh_skslxxjhb t1,hd_yslbshd t2
+         where t1.yxbz = 'Y'
+        and t2.yxbz='Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy')-1)
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') in(#{svo.ssnf}-1)
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        ) b
+    </select>
+    <!--税款趋势图 贺明超-->
+    <select id="skjnjeqsQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.ysnf, nvl(a.skjnje,0) skjnje from (select
+        to_char(t1.skssqq, 'yyyy') ysnf,sum(nvl(t1.skjnje, 0)) as skjnje
+        from jh_skslxxjhb t1,hd_yslbshd t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz='Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') <![CDATA[<=]]>   to_char(sysdate,'yyyy')
+            and to_char(t1.skssqq, 'yyyy') <![CDATA[>=]]>   to_char(sysdate,'yyyy')-10
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') <![CDATA[<=]]>   #{svo.ssnf}
+            and to_char(t1.skssqq, 'yyyy') <![CDATA[>=]]>   #{svo.ssnf}-10
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        group by to_char(t1.skssqq, 'yyyy') )a ,(
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            select to_char(sysdate,'yyyy') -0 ysnf from dual
+            union
+            select to_char(sysdate,'yyyy') -1 from dual
+            union
+            select to_char(sysdate,'yyyy') -2 from dual
+            union
+            select to_char(sysdate,'yyyy') -3 from dual
+            union
+            select to_char(sysdate,'yyyy') -4 from dual
+            union
+            select to_char(sysdate,'yyyy') -5 from dual
+            union
+            select to_char(sysdate,'yyyy') -6 from dual
+            union
+            select to_char(sysdate,'yyyy') -7 from dual
+            union
+            select to_char(sysdate,'yyyy') -8 from dual
+            union
+            select to_char(sysdate,'yyyy') -9 from dual
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            select #{svo.ssnf} -0 ysnf from dual
+            union
+            select #{svo.ssnf} -1 from dual
+            union
+            select #{svo.ssnf} -2 from dual
+            union
+            select #{svo.ssnf} -3 from dual
+            union
+            select #{svo.ssnf} -4 from dual
+            union
+            select #{svo.ssnf} -5 from dual
+            union
+            select #{svo.ssnf} -6 from dual
+            union
+            select #{svo.ssnf} -7 from dual
+            union
+            select #{svo.ssnf} -8 from dual
+            union
+            select #{svo.ssnf} -9 from dual
+        </if>
+        ) b where a.ysnf(+)=b.ysnf order by b.ysnf
+    </select>
+    <!--税款 税源类型 贺明超-->
+    <select id="sksylxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.sylx_dm,b.sylxmc,nvl(a.skjnje,0) skjnje from (select
+        t2.sylx,sum(nvl(t1.skjnje, 0)) as skjnje
+        from jh_skslxxjhb t1, hd_yslbshd t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') in(#{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        group by t2.sylx) a,dm_gy_sylx b where a.sylx(+)=b.sylx_dm
+    </select>
+     <!--税款行业 贺明超-->
+    <select id="skhyQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select b.qyshy_dm,b.qyshymc,nvl(a.skjnje,0) skjnje from (select
+        t2.qyshy,sum(nvl(t1.skjnje, 0)) as skjnje
+        from jh_skslxxjhb t1, hd_yslbshd t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') in(#{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        group by t2.qyshy) a,dm_gy_qyshy b where a.qyshy(+)=b.qyshy_dm
+    </select>
+<!--税款地下超采 贺明超-->
+    <select id="skdxsccqlxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.dxsccqlx_dm,b.dxsccqlxmc,nvl(a.skjnje,0) skjnje from (select
+        t2.dxsccqlx,sum(nvl(t1.skjnje, 0)) as skjnje
+        from jh_skslxxjhb t1, hd_yslbshd t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') in(#{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        group by t2.dxsccqlx) a,dm_gy_dxsccqlx b where a.dxsccqlx(+)=b.dxsccqlx_dm
+    </select>
+<!--税款 特殊用水 贺明超-->
+    <select id="sktsyslxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.tsyslb_dm,b.tsyslbmc,nvl(a.skjnje,0) skjnje from (select
+        t2.tsyslb,sum(nvl(t1.skjnje, 0)) as skjnje
+        from jh_skslxxjhb t1, hd_yslbshd t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.hdsbh=t2.hdsbh
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.skssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.skssqq, 'yyyy') in(  #{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t2.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t2.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t2.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t2.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        group by t2.tsyslb) a,dm_gy_tsyslb b where a.tsyslb(+)=b.tsyslb_dm
+    </select>
+</mapper>

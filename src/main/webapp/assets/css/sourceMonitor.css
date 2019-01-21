@@ -1,0 +1,400 @@
+/*?��???????*/
+.main {
+    background: none;
+}
+body,html {
+    height: 100%;
+    height: 100%;
+}
+.main .header {
+    position: relative;
+}
+.main .container {
+    min-width:1020px;
+    max-width:1920px;
+}
+.content1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+}
+/*������Ĳ����*/
+.aside {
+    width: 16%;
+    max-height: 920px;
+    min-height:865px;
+    text-align:center;
+    background-color: #282A31;
+    box-shadow: 2px 0 1px #0f0f0f;
+    border-top: 1px solid #0f0f0f;
+    /*position: relative;*/
+    overflow: hidden;
+    float: left;
+}
+@media screen and (max-width: 1920px){
+
+}
+/*���������*/
+.aside h1 {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    font-size:18px;
+    line-height: 40px;
+    text-align:left;
+    color:#00ADEE;
+    padding-left: 27px;
+    background-color: #2C2E36;
+    border-bottom: 1px solid #0f0f0f;
+}
+/*������ܷ���*/
+.aside .aside-All {
+    width: 100%;
+    height: 700px;
+    display: inline-block;
+    margin:0 auto;
+    position: relative;
+    /*overflow: auto;*/
+}
+
+.aside-All .all {
+    display:inline-block;
+    width: 70%;
+    height: 30px;
+    line-height: 30px;
+    background-color:#373941;
+    margin-top: 20px;
+    border-radius:10px;
+    text-align:center;
+    position: relative;
+}
+.aside-All .all:nth-child(1)::after,.all:nth-child(2)::after {
+    content:'';
+    display: block;
+    width: 20px;
+    height: 40px;
+    position: absolute;
+    top:20px;
+    right:-20px;
+    background: url(../images/icon1.png) no-repeat center center;
+    /*background-color: pink;*/
+}
+.aside-All .all:nth-child(4){
+    margin-top: 30px;
+}
+.aside-All .all:nth-child(3)::after{
+    content:'';
+    display: block;
+    width: 20px;
+    height: 40px;
+    position: absolute;
+    top:80%;
+    left:45%;
+    background: url(../images/icon2.png) no-repeat center center;
+}
+
+/*���������ϸ����*/
+.aside-All .lists {
+    display: none;
+}
+
+.aside-All .lists li {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 15px;
+    border-radius:10px;
+    text-align:center;
+    position: relative;
+}
+.aside-All .lists li:last-child{
+    margin-bottom: 10px;
+    border-bottom: 1px solid transparent;
+}
+.aside-All .lists li span {
+    float: left;
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align:center;
+    background: url(../images/sprite.png) no-repeat -46px -135px ;
+    background-color: #373941;
+    border-radius:50%;
+    margin:0 5px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.aside-All .lists li:nth-child(2) span{
+    background: url(../images/sprite.png) no-repeat -95px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(3) span{
+    background: url(../images/sprite.png) no-repeat -136px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(4) span{
+    background: url(../images/sprite.png) no-repeat -184px -135px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(5) span{
+    background: url(../images/sprite.png) no-repeat -236px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(6) span{
+    background: url(../images/sprite.png) no-repeat -276px -83px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(7) span{
+    background: url(../images/sprite.png) no-repeat -314px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(8) span{
+    background: url(../images/sprite.png) no-repeat -354px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(9) span{
+    background: url(../images/sprite.png) no-repeat 2px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(10) span{
+    background: url(../images/sprite.png) no-repeat -394px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(11) span{
+    background: url(../images/sprite.png) no-repeat -435px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(12) span{
+    background: url(../images/sprite.png) no-repeat -473px -84px ;
+    background-color: #373941;
+}
+.aside-All .lists li:nth-child(13) span{
+    background: url(../images/sprite.png) no-repeat 4px -133px ;
+    background-color: #373941;
+}
+.aside-All .lists li a {
+    margin-left: 40px;
+    display: block;
+    width: 120px;
+    height: 100%;
+    color:#fff;
+    font-size:13px;
+    background-color:#373941;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+.aside-All .all .list-title {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color:#fff;
+    font-size:15px;
+}
+
+.all .leftLine {
+    display: block;
+    width: 90px;
+    height: 1px;
+    position: absolute;
+    top:15px;
+    left:-85px;
+    background-color: #373941;
+}
+.aside-All .line2 {
+    /*top:65px;*/
+}
+.aside-All .line3 {
+    /*top:105px;*/
+}
+.aside-All .lists li::before {
+    content:'';
+    display: block;
+    width: 50px;
+    height: 1px;
+    position: absolute;
+    top:14px;
+    left:-45px;
+    background-color: #00ADEE;
+}
+.aside-All .all.active::before {
+    content:'';
+    display: block;
+    width: 100px;
+    height: 1px;
+    position: absolute;
+    top:14px;
+    left:-90px;
+    background-color: #00ADEE;
+}
+
+/*�ܷ����µĺ���*/
+.aside-All .all .line {
+    width: 1px;
+    height: 1000%;
+    background-color: #00ADEE;
+    position: absolute;
+    top:15px;
+    left:-30px;
+    display: none;
+}
+
+/*�������Ҳ�ͼ����*/
+.content1 .charts {
+    float: left;
+    height: 100%;
+   width:84%;
+}
+/*ͼ��·��*/
+.content1 .charts .chart-title {
+    /*float: left;*/
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    padding-left: 30px;
+    font-size:16px;
+    color:#848689;
+}
+/*ͼ������*/
+.content1 .charts .chart-content {
+    width: 100%;
+    /*height: 100%;*/
+    display: flex;
+}
+/*ͼ�����ݺ���*/
+.chart-content .contentBox {
+    flex:1;
+    margin: 0 20px;
+    /*padding-top: 15px;*/
+    width: 100%;
+    height: 700px;
+    text-align:center;
+    overflow: hidden;
+}
+
+/*ͼ����� ��̨���*/
+
+.contentBox .chartBox {
+    width: 100%;
+    height: 100%;
+}
+/*ͼ����ϸ������*/
+.contentBox .chartIn {
+    width: 100%;
+    /*height: 100%;*/
+    padding: 35px 0;
+    text-align:center;
+    /*background-color: pink;*/
+}
+/*�ϲ���������*/
+.chartIn .chartIn-top ,.chartIn-btm{
+    width: 80%;
+    margin:0 auto;
+    height: 50%;
+    border: 1px dashed #fff;
+    padding: 20px;
+    display: flex;
+}
+/*�ɼ�����*/
+.chartIn .chartIn-top h1,.chartIn-btm h1 {
+    display: block;
+    width: 80px;
+    float: left;
+    font-size:25px;
+}
+.chartIn .chartIn-top .top-left {
+    height: 225px;
+    border: 1px solid #fff;
+    flex:2;
+    padding-top: 30px;
+}
+.chartIn-top .top-left .people {
+    width: 45%;
+    height: 80px;
+    background-color: #00B18F;
+    float: left;
+    margin-left:20px;
+    border-radius:8px 0 0 8px;
+    text-align:center;
+}
+.chartIn-top .top-left .govemment {
+    width: 45%;
+    height: 80px;
+    background-color:#029F51;
+    float: left;
+    border-radius:0 8px 8px 0;
+}
+.chartIn-top .top-left h3 {
+    width: 50%;
+    height: 24px;
+    line-height: 24px;
+    border-radius:12px;
+    background-color: #064C3F;
+    margin:5px auto;
+    font-size:13px;
+}
+.chartIn-top .top-left .people_list {
+    width: 100%;
+    height: 40px;
+    /*background-color: pink;*/
+    overflow: hidden;
+}
+.chartIn-top .top-left .people_list ul {
+    width: 1000% ;
+    height: 100%;
+}
+.chartIn-top .top-left .people_list ul li {
+    width: 40px;
+    height: 100%;
+    float: left;
+    position: relative;
+    padding-left:  10px;
+}
+.top-left .people_list ul li span {
+    width: 100%;
+    height: 25px;
+    background: url(../images/6.png) no-repeat;
+    -webkit-background-size: 30px 30px;
+    background-size: 30px 30px;
+    display: block;
+    position: absolute;
+    top:-3px;
+    left:10px;
+}
+.top-left .people_list ul li a {
+    display: block;
+    width: 100%;
+    padding-top: 20px;
+    background-color: pink;
+}
+.chartIn .chartIn-top .top-right{
+    flex:1;
+    height: 255px;
+    border: 1px solid #fff;
+    /*width: 220px;*/
+    margin:0 30px 0 50px;
+}
+.contentBox .chartIn img {
+    margin:0 auto;
+}
+.contentBox .chartIn #demo {
+    display: block;
+    margin:0 auto;
+    width: 100%;
+    /*height: 100%;*/
+}
+
+/*�����������Ϣ*/
+.contentBox .chartIn .demo {
+    width: 400px;
+    float: left;
+    height: 300px;
+    background-color: pink;
+}
+
+
+

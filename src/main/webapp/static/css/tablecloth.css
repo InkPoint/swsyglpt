@@ -1,0 +1,19 @@
+/*
+
+	TableCloth
+	by Alen Grakalic, brought to you by cssglobe.com
+
+*/
+
+/* general styles */
+
+.rs table, td{
+	font:100% Arial, Helvetica, sans-serif;
+}
+td{padding:.2em;}
+.rs table{width:100%;border-collapse:collapse;margin:0;}
+.rs th, #rs td{text-align:left;padding:.5em;border:1px solid #fff;}
+.rs th{background:#328aa4 url("../images/tr_back.gif") repeat-x;color:#fff;}
+
+/* use this if you want to apply different styleing to empty table cells*/
+td.empty, tr.odd td.empty, tr.even td.empty{background:#fff;}

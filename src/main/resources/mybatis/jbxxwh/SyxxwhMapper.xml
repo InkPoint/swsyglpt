@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.jbxxwh.dao.SyxxwhMapper">
+
+    <!--水源信息维护初始化查询-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT DISTINCT * FROM(
+                SELECT  T1.SYDJXH
+                        ,T1.SYBH
+                        ,T10.SYQYSMC SYQY_DM
+                        ,T11.SYZTMC SYZT_DM
+                        ,T2.QSYTMC QSYT_DM
+                        ,T1.QSKSZD
+                        ,T1.QSXKZBH
+                        ,T1.QSXKZZT_DM
+                        ,T1.QSXKSPJG_DM
+                        ,T2.QSYTMC
+                        ,T1.QSKSL
+                        ,T1.ZJLGS
+                        ,T3.SFMC SFZXJC
+                        ,T1.FJLGS
+                        ,T4.SYLXMC SYLX_DM
+                        ,T5.QYSHYMC QSHY_DM
+                        ,T6.TSYSLBMC TSYSLB_DM
+                        ,TO_CHAR(T1.QSXKYXQQ, 'yyyy-MM-dd') QSXKYXQQ
+                        ,TO_CHAR(T1.QSXKYXQZ, 'yyyy-MM-dd') QSXKYXQZ
+                        ,T3.SFMC DXSQSDGSGWSFFG
+                        ,T7.DXSCCQLXMC DXSCCQLX_DM
+                        ,T9.XZQHMC XZQH_DM
+                        ,T1.YXBZ
+                        ,T1.SZYFEBZ
+                        ,T1.JD
+                        ,T1.LRRY_DM
+                        ,T1.LRRQ
+                        ,T1.XGRY_DM
+                        ,T1.XGRQ
+                        ,T1.WD
+                        ,T1.QSLHDJG_DM
+                        ,T1.NQSJH
+                        ,T8.QSFSMC QSFS_DM
+                        ,T1.TSDD
+                        ,T1.TSFS_DM
+                        ,T1.TSL
+                        ,T1.TSSZYQ
+                        ,T12.YSHDJXH
+                FROM DJ_SYXXB T1,
+                    DM_GY_QSYT T2,
+                    DM_GY_SF T3,
+                    DM_GY_SYLX T4,
+                    DM_GY_QYSHY T5,
+                    DM_GY_TSYSLB T6,
+                    DM_GY_DXSCCQLX T7,
+                    DM_GY_QSFSDM T8,
+                    DM_GY_XZQH T9,
+                    DM_GY_SYQY T10,
+                    DM_GY_SYZT T11,
+                    DJ_YSHSYGXB T12
+                WHERE
+                    T1.YXBZ = 'Y'
+                    AND T1.QSYT_DM = T2.QSYT_DM(+)
+                    AND T1.SFZXJC = T3.SF_DM(+)
+                    AND T1.SYLX_DM = T4.SYLX_DM(+)
+                    AND T1.QSHY_DM = T5.QYSHY_DM(+)
+                    AND T1.TSYSLB_DM = T6.TSYSLB_DM(+)
+                    AND T1.DXSQSDGSGWSFFG = T3.SF_DM(+)
+                    AND T1.DXSCCQLX_DM = T7.DXSCCQLX_DM(+)
+                    AND T1.QSFS_DM = T8.QSFS_DM(+)
+                    AND T1.XZQH_DM = T9.XZQH_DM(+)
+                    AND T1.SYQY_DM = T10.SYQY_DM(+)
+                    AND T1.SYZT_DM = T11.SYZT_DM(+)
+                    AND T1.SYBH = T12.SYBH(+))S WHERE 1 = 1
+            <if test="svo.syqy_dm != null">
+                and S.SYQY_DM like '%' || #{svo.syqy_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.qskszd != null">
+                and S.QSKSZD like '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.sylx_dm != null">
+                and S.SYLX_DM like '%' || #{svo.sylx_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.syzt_dm != null">
+                and S.SYZT_DM like '%' || #{svo.syzt_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            ORDER BY S.LRRQ DESC
+    </select>
+    <!--水源信息维护-区域查询-->
+    <select id="queryByRegion" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT DISTINCT * FROM(
+                SELECT  T1.SYDJXH
+                        ,T1.SYBH
+                        ,T1.SYQY_DM QYDM
+                        ,T10.SYQYSMC SYQY_DM
+                        ,T11.SYZTMC SYZT_DM
+                        ,T2.QSYTMC QSYT_DM
+                        ,T1.QSKSZD
+                        ,T1.QSXKZBH
+                        ,T1.QSXKZZT_DM
+                        ,T1.QSXKSPJG_DM
+                        ,T2.QSYTMC
+                        ,T1.QSKSL
+                        ,T1.ZJLGS
+                        ,T3.SFMC SFZXJC
+                        ,T1.FJLGS
+                        ,T4.SYLXMC SYLX_DM
+                        ,T5.QYSHYMC QSHY_DM
+                        ,T6.TSYSLBMC TSYSLB_DM
+                        ,TO_CHAR(T1.QSXKYXQQ, 'yyyy-MM-dd') QSXKYXQQ
+                        ,TO_CHAR(T1.QSXKYXQZ, 'yyyy-MM-dd') QSXKYXQZ
+                        ,T3.SFMC DXSQSDGSGWSFFG
+                        ,T7.DXSCCQLXMC DXSCCQLX_DM
+                        ,T9.XZQHMC XZQH_DM
+                        ,T1.YXBZ
+                        ,T1.SZYFEBZ
+                        ,T1.JD
+                        ,T1.LRRY_DM
+                        ,T1.LRRQ
+                        ,T1.XGRY_DM
+                        ,T1.XGRQ
+                        ,T1.WD
+                        ,T1.QSLHDJG_DM
+                        ,T1.NQSJH
+                        ,T8.QSFSMC QSFS_DM
+                        ,T1.TSDD
+                        ,T1.TSFS_DM
+                        ,T1.TSL
+                        ,T1.TSSZYQ
+                        ,T12.YSHDJXH
+                FROM DJ_SYXXB T1,
+                    DM_GY_QSYT T2,
+                    DM_GY_SF T3,
+                    DM_GY_SYLX T4,
+                    DM_GY_QYSHY T5,
+                    DM_GY_TSYSLB T6,
+                    DM_GY_DXSCCQLX T7,
+                    DM_GY_QSFSDM T8,
+                    DM_GY_XZQH T9,
+                    DM_GY_SYQY T10,
+                    DM_GY_SYZT T11,
+                    DJ_YSHSYGXB T12
+                WHERE
+                    T1.YXBZ = 'Y'
+                    AND T1.QSYT_DM = T2.QSYT_DM(+)
+                    AND T1.SFZXJC = T3.SF_DM(+)
+                    AND T1.SYLX_DM = T4.SYLX_DM(+)
+                    AND T1.QSHY_DM = T5.QYSHY_DM(+)
+                    AND T1.TSYSLB_DM = T6.TSYSLB_DM(+)
+                    AND T1.DXSQSDGSGWSFFG = T3.SF_DM(+)
+                    AND T1.DXSCCQLX_DM = T7.DXSCCQLX_DM(+)
+                    AND T1.QSFS_DM = T8.QSFS_DM(+)
+                    AND T1.XZQH_DM = T9.XZQH_DM(+)
+                    AND T1.SYQY_DM = T10.SYQY_DM(+)
+                    AND T1.SYZT_DM = T11.SYZT_DM(+)
+                    AND T1.SYBH = T12.SYBH(+))S WHERE 1 = 1
+            <if test="svo.syqy_dm != null">
+                and S.SYQY_DM like '%' || #{svo.syqy_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.qskszd != null">
+                and S.QSKSZD like '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.sylx_dm != null">
+                and S.SYLX_DM like '%' || #{svo.sylx_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.syzt_dm != null">
+                and S.SYZT_DM like '%' || #{svo.syzt_dm,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.qydm != null">
+                AND S.QYDM = #{svo.qydm,jdbcType=VARCHAR}
+            </if>
+            <if test="svo.qydm == null">
+                AND S.QYDM IN ('03','04')
+            </if>
+            ORDER BY S.LRRQ DESC
+    </select>
+    <!--水源信息逻辑删除-->
+    <update id="del" parameterType="java.util.HashMap">
+        UPDATE DJ_SYXXB T
+              SET T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},
+              T.XGRQ = sysdate,
+              T.YXBZ = 'N'
+              WHERE T.SYDJXH = #{svo.sydjxh,jdbcType=VARCHAR}
+    </update>
+    <!--附件信息逻辑删除-->
+    <update id="delAttach" parameterType="java.util.HashMap">
+        UPDATE DJ_YSHSYGXB T
+              SET T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},
+                  T.XGRQ = sysdate,
+                  T.YXBZ = 'N'
+              WHERE T.SYBH = #{svo.sybh,jdbcType=VARCHAR}
+    </update>
+    <!--新增水源信息-->
+    <insert id="addData" parameterType="java.util.HashMap">
+      INSERT INTO DJ_SYXXB
+       (SYDJXH,SYBH,SYQY_DM,SYZT_DM,QSKSZD,QSXKZBH,QSXKZZT_DM,QSXKSPJG_DM,
+       QSYT_DM,QSKSL,ZJLGS,SFZXJC,FJLGS,SYLX_DM,QSHY_DM,TSYSLB_DM,QSXKYXQQ,
+       QSXKYXQZ,DXSQSDGSGWSFFG,DXSCCQLX_DM,XZQH_DM,YXBZ,SZYFEBZ,JD,LRRY_DM,
+       LRRQ,WD,QSLHDJG_DM,NQSJH,QSFS_DM,TSDD,TSFS_DM,TSL,TSSZYQ)
+       VALUES ( sydjxh(),#{svo.sybh,jdbcType=VARCHAR},#{svo.syqy_dm,jdbcType=CHAR},#{svo.syzt_dm,jdbcType=CHAR}
+        ,#{svo.qskszd,jdbcType=VARCHAR},#{svo.qsxkzbh,jdbcType=VARCHAR},#{svo.qsxkzzt_dm,jdbcType=CHAR}
+        ,#{svo.qsxkspjg_dm,jdbcType=VARCHAR},#{svo.qsyt_dm,jdbcType=CHAR},#{svo.qsksl,jdbcType=DOUBLE}
+        ,#{svo.zjlgs,jdbcType=DOUBLE},#{svo.sfzxjc,jdbcType=CHAR},#{svo.fjlgs,jdbcType=DOUBLE}
+        ,#{svo.sylx_dm,jdbcType=CHAR},#{svo.qshy_dm,jdbcType=CHAR},#{svo.tsyslb_dm,jdbcType=CHAR}
+        ,#{svo.qsxkyxqq,jdbcType=TIMESTAMP},#{svo.qsxkyxqz,jdbcType=TIMESTAMP},#{svo.dxsqsdgsgwsffg,jdbcType=CHAR}
+        ,#{svo.dxsccqlx_dm,jdbcType=CHAR},#{svo.xzqh_dm,jdbcType=VARCHAR},'Y'
+        ,#{svo.szyfebz,jdbcType=DOUBLE},#{svo.jd,jdbcType=VARCHAR},#{svo.lrry_dm,jdbcType=VARCHAR}
+        ,sysdate,#{svo.wd,jdbcType=VARCHAR},#{svo.qslhdjg_dm,jdbcType=VARCHAR}
+        ,#{svo.nqsjh,jdbcType=DOUBLE},#{svo.qsfs_dm,jdbcType=CHAR},#{svo.tsdd,jdbcType=VARCHAR}
+        ,#{svo.tsfs_dm,jdbcType=VARCHAR},#{svo.tsl,jdbcType=DOUBLE},#{svo.tsszyq,jdbcType=VARCHAR})
+    </insert>
+    <!--保存编辑后的(水源信息)-->
+    <update id="saveEditData" parameterType="java.util.HashMap">
+      UPDATE DJ_SYXXB T
+              SET T.SYQY_DM = #{svo.syqy_dm,jdbcType=CHAR},--水源区域
+                  T.SYZT_DM = #{svo.syzt_dm,jdbcType=CHAR},--水源状态
+                  T.QSXKZZT_DM = #{svo.qsxkzzt_dm,jdbcType=CHAR},--取水许可证号
+                  T.QSXKZBH = #{svo.qsxkzbh,jdbcType=VARCHAR},--取水许可证编号
+                  T.QSXKSPJG_DM = #{svo.qsxkspjg_dm,jdbcType=VARCHAR},--取水许可审批机关代码
+                  T.QSYT_DM = #{svo.qsyt_dm,jdbcType=CHAR},--取水用途
+                  T.QSKSL = #{svo.qsksl,jdbcType=DOUBLE},--取水口数量
+                  T.QSKSZD = #{svo.qskszd,jdbcType=VARCHAR},--取水口所在地(取水地点)
+                  T.ZJLGS = #{svo.zjlgs,jdbcType=DOUBLE},--总计量个数
+                  T.SFZXJC = #{svo.sfzxjc,jdbcType=CHAR},--是否在线监测
+                  T.SYLX_DM = #{svo.sylx_dm,jdbcType=CHAR},--水源类型
+                  T.QSHY_DM = #{svo.qshy_dm,jdbcType=CHAR},--取用水行业
+                  T.TSYSLB_DM = #{svo.tsyslb_dm,jdbcType=CHAR},--特殊用水类别
+                  T.QSXKYXQQ = #{svo.qsxkyxqq,jdbcType=TIMESTAMP},--取水许可证有效期限起
+                  T.QSXKYXQZ = #{svo.qsxkyxqz,jdbcType=TIMESTAMP},--取水许可证有效期限止
+                  T.QSLHDJG_DM = #{svo.qslhdjg_dm,jdbcType=VARCHAR},--取水量核定机关
+                  T.NQSJH = #{svo.nqsjh,jdbcType=DOUBLE},--年取用水计划
+                  T.DXSQSDGSGWSFFG = #{svo.dxsqsdgsgwsffg,jdbcType=CHAR},--地下水取水地点供水管网是否覆盖
+                  T.DXSCCQLX_DM = #{svo.dxsccqlx_dm,jdbcType=CHAR},--地下水超采区类型
+                  T.SZYFEBZ = #{svo.szyfebz,jdbcType=DOUBLE},--水资源费额标准
+                  T.QSFS_DM = #{svo.qsfs_dm,jdbcType=CHAR},--取水方式
+                  T.XZQH_DM = #{svo.xzqh_dm,jdbcType=VARCHAR},--行政区划
+                  T.JD = #{svo.jd,jdbcType=VARCHAR},--经度
+                  T.WD = #{svo.wd,jdbcType=VARCHAR},--维度
+                  T.TSDD = #{svo.tsdd,jdbcType=VARCHAR},--退水地点
+                  T.TSFS_DM = #{svo.tsfs_dm,jdbcType=VARCHAR},--退水方式
+                  T.TSL = #{svo.tsl,jdbcType=DOUBLE},--退水量
+                  T.TSSZYQ = #{svo.tsszyq,jdbcType=VARCHAR},--退水水质要求
+                  T.FJLGS = #{svo.fjlgs,jdbcType=DOUBLE},--分计量个数
+                  T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},--修改人员代码
+                  T.XGRQ = sysdate
+              WHERE T.SYDJXH = #{svo.sydjxh,jdbcType=VARCHAR}
+    </update>
+    <!--保存编辑后的(用水户信息)-->
+    <update id="saveUserData" parameterType="java.util.HashMap">
+      UPDATE DJ_YSHSYGXB T
+           SET  T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},
+                T.XGRQ = sysdate,
+                T.YSHDJXH = #{svo.yshdjxh,jdbcType=VARCHAR}
+         WHERE T.SYBH = #{svo.sybh,jdbcType=VARCHAR}
+    </update>
+    <!--根据水源登记序号（回填数据）-->
+    <select id="backfillData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT T.SYDJXH
+              ,T.SYBH
+              ,T.SYQY_DM
+              ,T.SYZT_DM
+              ,T.QSKSZD
+              ,T.QSXKZBH
+              ,T.QSXKZZT_DM
+              ,T.QSXKSPJG_DM
+              ,T.QSYT_DM
+              ,T.QSKSL
+              ,T.ZJLGS
+              ,T.SFZXJC
+              ,T.FJLGS
+              ,T.SYLX_DM
+              ,T.QSHY_DM
+              ,T.TSYSLB_DM
+              ,to_char(T.QSXKYXQQ, 'yyyy-MM-dd') QSXKYXQQ
+              ,to_char(T.QSXKYXQZ, 'yyyy-MM-dd') QSXKYXQZ
+              ,T.DXSQSDGSGWSFFG
+              ,T.DXSCCQLX_DM
+              ,T.XZQH_DM
+              ,T.YXBZ
+              ,T.SZYFEBZ
+              ,T.JD
+              ,T.LRRY_DM
+              ,T.LRRQ
+              ,T.XGRY_DM
+              ,T.XGRQ
+              ,T.WD
+              ,T.QSLHDJG_DM
+              ,T.NQSJH
+              ,T.QSFS_DM
+              ,T.TSDD
+              ,T.TSFS_DM
+              ,T.TSL
+              ,T.TSSZYQ
+              ,T2.YSHDJXH
+              ,T2.QSXKZURL
+         FROM  DJ_SYXXB T,DJ_YSHSYGXB T2
+            WHERE 1 = 1
+                   AND T.SYBH = T2.SYBH(+)
+                   AND T.SYDJXH LIKE '%' || #{svo.sydjxh,jdbcType=VARCHAR} || '%'
+    </select>
+    <!--根据水源登记序号（查询路径）-->
+    <select id="queryPath" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       SELECT H1.QSXKZURL FROM (
+           SELECT T1.SYDJXH,T2.QSXKZURL
+                   FROM  DJ_SYXXB T1,DJ_YSHSYGXB T2
+                      WHERE 1 = 1
+                             AND T1.SYBH = T2.SYBH(+))H1
+                             WHERE
+                             H1.QSXKZURL IS NOT NULL
+                             AND H1.SYDJXH LIKE '%' || #{svo.sydjxh,jdbcType=VARCHAR} || '%'
+    </select>
+    <!--新增附件信息-->
+    <insert id="addAttach" parameterType="java.util.HashMap">
+       INSERT INTO DJ_YSHSYGXB
+           (SYGXXH,SYBH,QSXKZURL,YXBZ,LRRY_DM,LRRQ,YSHDJXH)
+        VALUES
+           (sygxxh(),#{svo.sybh,jdbcType=VARCHAR},#{svo.qsxkzurl,jdbcType=VARCHAR},'Y',
+           #{svo.lrry_dm,jdbcType=VARCHAR},sysdate,#{svo.yshdjxh,jdbcType=VARCHAR})
+    </insert>
+    <!--取水用途(菜单)-->
+    <select id="qsytcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+        SELECT TRIM(T.QSYT_DM) id,T.QSYTMC text FROM DM_GY_QSYT T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--是否(菜单)-->
+    <select id="whether" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+        SELECT TRIM(T.SF_DM) id,T.SFMC text FROM DM_GY_SF T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--水源类型(菜单)-->
+    <select id="sylxcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.SYLX_DM) id,T.SYLXMC text FROM DM_GY_SYLX T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--取用水行业(菜单)-->
+    <select id="qyshycd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.QYSHY_DM) id,T.QYSHYMC text FROM DM_GY_QYSHY T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--特殊用水类别(菜单)-->
+    <select id="tsyslbcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.TSYSLB_DM) id,T.TSYSLBMC text FROM DM_GY_TSYSLB T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--地下水超采类型(菜单)-->
+    <select id="dxsccqlxcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.DXSCCQLX_DM) id,T.DXSCCQLXMC text FROM DM_GY_DXSCCQLX T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--取水方式(菜单)-->
+    <select id="qsfscd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.QSFS_DM) id,T.QSFSMC text FROM DM_GY_QSFSDM T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--行政区划(菜单)-->
+    <select id="xzqhcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.XZQH_DM) id,T.XZQHMC text FROM DM_GY_XZQH T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--水源状态(菜单)-->
+    <select id="syztcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.SYZT_DM) id,T.SYZTMC text FROM DM_GY_SYZT T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--水源区域(菜单-查看区域)-->
+    <select id="syqycd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT * FROM (
+       SELECT TRIM(T1.SYQY_DM) ID,T1.SYQYSMC TEXT FROM DM_GY_SYQY T1 WHERE T1.YXBZ = 'Y')H1
+              WHERE 1 = 1
+        <if test="svo.syqy_dm != null">
+            AND H1.ID = #{svo.syqy_dm,jdbcType=VARCHAR}
+        </if>
+        <if test="svo.syqy_dm == null">
+            AND H1.ID IN ('03','04')
+        </if>
+    </select>
+    <!--水源区域(菜单-查看所有)-->
+    <select id="waterAreaMenu" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T1.SYQY_DM) ID,T1.SYQYSMC TEXT FROM DM_GY_SYQY T1 WHERE T1.YXBZ = 'Y'
+    </select>
+    <!--用水户(菜单)-->
+    <select id="yshcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+       SELECT TRIM(H1.YSHDJXH) ID,H1.NSRMC TEXT FROM (
+                         SELECT * FROM DJ_YSHXXB T1 WHERE 1 = 1
+                                                          AND T1.YXBZ = 'Y'
+                                                          ORDER BY T1.LRRQ DESC)H1
+    </select>
+    <!--取水许可证状态(菜单)-->
+    <select id="qsxkzztcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.SyxxwhVO">
+      SELECT TRIM(T.QSXKZZT_DM) ID,T.QSXKZZTMC TEXT FROM DM_GY_QSXKZZT T WHERE T.YXBZ = 'Y'
+    </select>
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkUserGw" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,dm_gy_gwys t2
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t2.acl_station_id
+        and   instr(#{gwdmstr},'['||t2.gw_dm||']')>0
+        and   t0.user_id =#{userid}
+    </select>
+</mapper>

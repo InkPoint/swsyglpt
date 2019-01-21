@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.yslhd.YslbsMapper">
+    <!--获取水源列表-->
+    <select id="getSyList" parameterType="java.util.Map" resultType="com.xasw.common.model.Select2VO">
+        select t.sybh id,
+               t.qskszd text
+          from dj_syxxb t, dj_yshsygxb g, dj_yshxxb b
+         where t.sybh = g.sybh
+           and g.yshdjxh = b.yshdjxh
+           and t.yxbz = 'Y'
+           and g.yxbz = 'Y'
+           and b.yxbz = 'Y'
+           and b.yshzh = '${usercode}'
+    </select>
+    <!--获取水源和定岗-->
+    <select id="getShry"   resultType="com.xasw.yslhd.model.YslbsVO">
+         select u.user_code id,u.user_name text
+                from acl_user_group t0
+                     ,acl_organize_station_xref t1
+                     ,dm_gy_gwys t2,
+                     acl_user u
+                where t0.xref_id = t1.xref_id
+                and   t1.station_id = t2.acl_station_id
+                and t0.user_id  = u.user_id
+                and t2.gw_dm ='002'
+           order by u.user_code
+    </select>
+    <!--带出用水量报送信息主表-->
+    <select id="getBsxx" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select r.sydjxh,
+               r.sybh,
+               r.nsrsbh,
+               r.nsrmc,
+               r.bsyxm,
+               r.bsylxdh,
+               r.sylx_dm sylx,
+               c.sylxmc,
+               r.qshy_dm qyshy,
+               d.qyshymc,
+               r.syqy_dm syqy,
+               e.syqysmc,
+               e.fzr_dm slhdrqz,
+               r.tsyslb_dm tsyslb,
+               f.tsyslbmc,
+               r.dxsccqlx_dm dxsccqlx,
+               g.dxsccqlxmc,
+               r.dxsqsdgsgwsffg dxsqsddgsgw,
+               h.sfmc,
+               i.user_name slhdrqzmc
+          from (select t.sydjxh,
+                       t.sybh,
+                       b.nsrsbh,
+                       b.nsrmc,
+                       b.bsyxm,
+                       b.bsylxdh,
+                       t.sylx_dm,
+                       t.qshy_dm,
+                       t.syqy_dm,
+                       t.tsyslb_dm,
+                       t.dxsccqlx_dm,
+                       t.dxsqsdgsgwsffg
+                  from dj_syxxb t, dj_yshsygxb a, dj_yshxxb b
+                 where t.sybh = a.sybh
+                   and a.yshdjxh = b.yshdjxh
+                   and t.yxbz = 'Y'
+                   and a.yxbz = 'Y'
+                   and b.yshzh = '${yshzh}'
+                   and t.sybh = '${sybh}') r,
+               dm_gy_sylx c,
+               dm_gy_qyshy d,
+               dm_gy_syqy e,
+               dm_gy_tsyslb f,
+               dm_gy_dxsccqlx g,
+               dm_gy_sf h,
+               acl_user i
+         where r.sylx_dm = c.sylx_dm(+)
+           and r.qshy_dm = d.qyshy_dm(+)
+           and r.syqy_dm = e.syqy_dm(+)
+           and r.tsyslb_dm = f.tsyslb_dm(+)
+           and r.dxsccqlx_dm = g.dxsccqlx_dm(+)
+           and r.dxsqsdgsgwsffg = h.sf_dm(+)
+           and e.fzr_dm = i.user_code(+)
+    </select>
+    <!--报送水表明细-->
+    <select id="getBsmx" parameterType="java.util.HashMap" resultType="com.xasw.yslhd.model.YslbsVO">
+        select t.sybh,
+        s.qskszd qskdd,
+        t.sbwzbh bh,
+        nvl('',0)sqbds,
+        nvl('',0)bqbds,
+        nvl('',0)bqqsl,
+        nvl('',0)ljqsl,
+        nvl('',0)jhqsl,
+        nvl('',0)hddjhnqsl,
+        nvl('',0)hddcjhqsl,
+        '' fileurl
+        from  dj_csbdssb t,dj_syxxb s
+        where t.sybh = s.sybh
+        and t.yxbz = 'Y'
+        and t.yxbz = 'Y'
+        and t.sbzt_dm !='02'
+        and t.sbry_dm like  '%${sbry}%'
+        order by t.sybh
+    </select>
+    <!--新增报送图片预览-->
+    <select id="getPicView" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t.* from hd_yslbshdmx t where t.yxbz ='Y' and  t.mxxh = '${mxxh}'
+    </select>
+
+    <!--用水量报送新增数据-->
+    <insert id="newaddition" parameterType="java.util.HashMap">
+        insert into hd_yslbshd
+        (xxcjid,
+        sxzzgbm,
+        qslssqq,
+        qslssqz,
+        cbrq,
+        nsrsbh,
+        lxr,
+        lxfs,
+        nsrmc,
+        qsjh,
+        sylx,
+        qyshy,
+        dxsccqlx,
+        dxsqsddgsgw,
+        tsyslb,
+        lrr,
+        lrsj,
+        yxbz,
+        djxh,
+        nsrqz,
+        slhdrqz,
+        swjgslr,
+        slrq,
+        shr_dm,
+        hdjglx_dm,
+        syqy)
+        values
+        (sys_guid(),
+        '${svo.sxzzgbm}',
+        '${svo.qslssqq}',
+        '${svo.qslssqz}',
+        '${svo.cbrq}',
+        '${svo.nsrsbh}',
+        '${svo.lxr}',
+        '${svo.lxfs}',
+        '${svo.nsrmc}',
+        '${svo.qsjh}',
+        '${svo.sylx}',
+        '${svo.qyshy}',
+        '${svo.dxsccqlx}',
+        '${svo.dxsqsddgsgw}',
+        '${svo.tsyslb}',
+        '${svo.lrr}',
+        sysdate,
+        'Y',
+        '${svo.djxh}',
+        '${svo.nsrqz}',
+        '${svo.slhdrqz}',
+        '${svo.swjgslr}',
+        '${svo.slhdrqz}',
+        '${svo.slrq}',
+        '01',
+        '${svo.syqy}')
+    </insert>
+
+    <!--新增获取主键-->
+    <select id="getid" parameterType="java.util.HashMap" resultType="com.xasw.yslhd.model.YslbsVO">
+        select t.xxcjid from hd_yslbshd t  where t.lrsj=(select max(lrsj)from HD_YSLBSHD)
+    </select>
+    <!--报送明细数据-->
+    <insert id="theDetailData" parameterType="map">
+        insert into hd_yslbshdmx (xxcjid,mxxh,qskdd,bh,sqbds,bqbds,bqqsl,ljqsl,jhqsl,hddjhnqsl,hddcjhqsl,yxbz,lrsj,fileurl)
+        <foreach collection="xxmxlist" item="svo" separator="union all">
+                select '${xxcjid}',substr('${svo.fileurl}',29,20),'${svo.qskdd}','${svo.bh}','${svo.sqbds}','${svo.bqbds}','${svo.bqqsl}','${svo.ljqsl}','${svo.jhqsl}','${svo.hddjhnqsl}','${svo.hddcjhqsl}','Y',sysdate,'${svo.fileurl}' from dual
+        </foreach>
+    </insert>
+    <!--删除空数据-->
+    <delete id="deleteNull" parameterType="java.util.HashMap">
+        delete from hd_yslbshdmx t
+         where t.mxxh is null
+           and t.fileurl is null
+           and t.xxcjid = '${xxcjid}'
+    </delete>
+
+    <!--报送记录查询-->
+    <select id="selectAll" parameterType="java.util.HashMap" resultType="com.xasw.yslhd.model.YslbsVO">
+        select r.xxcjid,
+        r.nsrsbh,
+        r.nsrmc,
+        a.syqysmc syqy,
+        b.sylxmc sylx,
+        r.qskdd,
+        r.qslssqq,
+        r.qslssqz,
+        r.hdjglxmc,
+        to_char(r.lrsj, 'yyyy-mm-dd HH24:mi:ss') lrsj
+        from (select t.xxcjid,
+        t.nsrsbh,
+        t.nsrmc,
+        t.syqy,
+        t.sylx,
+        t1.qskdd,
+        t.qslssqq,
+        t.qslssqz,
+        t.lrr,
+        t.shr_dm,
+        decode(t.hdjglx_dm,
+        '01',
+        '未核定',
+        '02',
+        '已核定未通过',
+        '03',
+        '已核定已通过') hdjglxmc,
+        t.lrsj
+        from hd_yslbshd t, hd_yslbshdmx t1
+        where t.xxcjid = t1.xxcjid
+        and t.yxbz = 'Y'
+        <if test="svo.bssjq != null">
+            and t.lrsj >= to_date('${svo.bssjq}','yyyy-mm-dd')
+        </if>
+        <if test="svo.bssjz != null">
+            and t.lrsj &lt; to_date('${svo.bssjz}','yyyy-mm-dd')+1
+        </if>
+        <if test="svo.lrr != null">
+            and t.lrr like '%${svo.lrr}%'
+        </if>
+        order by t.lrsj desc) r,
+        dm_gy_syqy a,
+        dm_gy_sylx b,
+        acl_user c
+        where 1 = 1
+        and trim(r.syqy) = a.syqy_dm(+)
+        and r.sylx = b.sylx_dm(+)
+        and r.lrr = c.user_code(+)
+        order by to_char(r.lrsj, 'yyyy-mm-dd HH24:mi:ss') desc
+    </select>
+
+    <!--编辑时候数据回填-->
+    <select id="getEditData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t.xxcjid,
+           t.sxzzgbm,
+           t.qslssqq,
+           t.qslssqz,
+           t.cbrq,
+           t.nsrsbh,
+           t.nsrmc,
+           t.qsjh,
+           t.lxr,
+           t.lxfs,
+           t.sylx,
+           a.sylxmc,
+           t.qyshy,
+           b.qyshymc,
+           t.syqy,
+           g.syqysmc syqymc,
+           t.tsyslb,
+           e.tsyslbmc,
+           t.dxsccqlx,
+           c.dxsccqlxmc,
+           t.dxsqsddgsgw,
+           d.sfmc,
+           t.nsrqz,
+           f.hdjglxmc,
+           t.slhdrqz,
+           u.user_name slhdrqzmc,
+           h.sxzzgbmmc
+      from hd_yslbshd     t,
+           dm_gy_sylx     a,
+           dm_gy_qyshy    b,
+           dm_gy_dxsccqlx c,
+           dm_gy_sf       d,
+           dm_gy_tsyslb   e,
+           dm_gy_hdjglx   f,
+           dm_gy_syqy     g,
+           dm_gy_sxzzgbm  h,
+           acl_user       u
+     where t.sylx = a.sylx_dm(+)
+       and t.qyshy = b.qyshy_dm(+)
+       and t.dxsccqlx = c.dxsccqlx_dm(+)
+       and trim(t.dxsqsddgsgw) = d.sf_dm(+)
+       and t.tsyslb = e.tsyslb_dm(+)
+       and t.hdjglx_dm = f.hdjglx_dm(+)
+       and trim(t.syqy) = g.syqy_dm(+)
+       and t.sxzzgbm = h.sxzzgbm_dm(+)
+       and t.slhdrqz = u.user_code(+)
+       and t.yxbz = 'Y'
+       and t.xxcjid = '${xxcjid}'
+    </select>
+
+    <!--编辑时候明细数据加载-->
+    <select id="getEditMx" parameterType="java.util.Map" resultType="com.xasw.yslhd.model.YslbsVO">
+        select t.* from hd_yslbshdmx t where t.mxxh is not null and t.yxbz = 'Y' and t.xxcjid = '${svo.xxcjid}' order by t.lrsj desc
+    </select>
+
+    <!--编辑时候更新主表数据-->
+    <update id="updateEdit" parameterType="java.util.HashMap" >
+        update hd_yslbshd
+                set  sxzzgbm       = '${svo.sxzzgbm}',
+                qslssqq       = '${svo.qslssqq}',
+                qslssqz       = '${svo.qslssqz}',
+                cbrq          = '${svo.cbrq}',
+                nsrsbh        = '${svo.nsrsbh}',
+                lxr           = '${svo.lxr}',
+                lxfs          = '${svo.lxfs}',
+                nsrmc         = '${svo.nsrmc}',
+                qsjh          = '${svo.qsjh}',
+                sylx          = '${svo.sylx}',
+                qyshy         = '${svo.qyshy}',
+                dxsccqlx      = '${svo.dxsccqlx}',
+                dxsqsddgsgw   = '${svo.dxsqsddgsgw}',
+                tsyslb        = '${svo.tsyslb}',
+                nsrqz         = '${svo.nsrqz}',
+                slhdrqz       = '${svo.slhdrqz}',
+                swjgslr       = '${svo.swjgslr}',
+                slrq          = '${svo.slrq}',
+                xgsj          = sysdate,
+                syqy          = '${svo.syqy}'
+        where xxcjid='${svo.xxcjid}'
+    </update>
+
+    <!--编辑时候更新明细数据-->
+    <update id="updateEditMx" parameterType="java.util.HashMap">
+        <foreach collection="xxmxlist" item="svo" separator=";">
+            <if test="svo.mxxh != null">
+                update  hd_yslbshdmx
+                <set>
+                    qskdd     = '${svo.qskdd}',
+                    bh        = '${svo.bh}',
+                    sqbds     = '${svo.sqbds}',
+                    bqbds     = '${svo.bqbds}',
+                    bqqsl     = '${svo.bqqsl}',
+                    ljqsl     = '${svo.ljqsl}',
+                    jhqsl     = '${svo.jhqsl}',
+                    hddjhnqsl = '${svo.hddjhnqsl}',
+                    hddcjhqsl = '${svo.hddcjhqsl}',
+                    fileurl = '${svo.fileurl}',
+                </set>
+                where mxxh = '${svo.mxxh}'
+            </if>
+        </foreach>
+    </update>
+
+    <!--核定书信息-->
+    <select id="hdsxx" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+            select t.*,
+               a.sylxmc,
+               b.qyshymc,
+               c.dxsccqlxmc,
+               d.sfmc,
+               e.tsyslbmc,
+               f.hdjglxmc,
+               g.syqysmc syqymc,
+               h.sxzzgbmmc,
+               u.user_name slhdrqz
+          from hd_yslbshd     t,
+               dm_gy_sylx     a,
+               dm_gy_qyshy    b,
+               dm_gy_dxsccqlx c,
+               dm_gy_sf       d,
+               dm_gy_tsyslb   e,
+               dm_gy_hdjglx   f,
+               dm_gy_syqy     g,
+               dm_gy_sxzzgbm h,
+               acl_user       u
+         where t.sylx = a.sylx_dm(+)
+           and t.qyshy = b.qyshy_dm(+)
+           and t.dxsccqlx = c.dxsccqlx_dm(+)
+           and trim(t.dxsqsddgsgw) = d.sf_dm(+)
+           and t.tsyslb = e.tsyslb_dm(+)
+           and t.hdjglx_dm = f.hdjglx_dm(+)
+           and trim(t.syqy) = g.syqy_dm(+)
+           and t.sxzzgbm = h.sxzzgbm_dm(+)
+           and t.slhdrqz = u.user_code(+)
+           and t.yxbz = 'Y'
+           and t.xxcjid = '${xxcjid}'
+    </select>
+</mapper>

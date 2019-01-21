@@ -1,0 +1,214 @@
+.account {
+    background: #FFF;
+}
+
+.account ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.account ul li {
+    width: 90%;
+    text-align: left;
+    float: left;
+    line-height: 40px;
+    height: 40px;
+    padding: 4px;
+    border-bottom: dotted 1px #336600
+}
+
+.tabui {
+    background: #FFF;
+}
+
+.tabui ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.tabui ul li {
+    width: 95%;
+    text-align: left;
+    float: left;
+    height: 24px;
+    padding: 4px;
+    border-bottom: dotted 1px #336600
+}
+
+.draw {
+    background: #FFF;
+}
+
+.draw ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.draw ul li {
+    display: block;
+    background: #ccccff;
+    padding: 6px;
+    width: 160px;
+    height: 24px;
+    line-height: 30px;
+    border: #666 solid 1px;
+    margin: 4px 10px 4px 10px;
+    float: left;
+}
+
+.tiles {
+    background: #FFF;
+}
+
+.tiles ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.tiles ul li {
+    margin: 4px 10px 4px 10px;
+    float: left;
+}
+
+.tabui ul li span.a {
+    display:block;
+    float:left;
+    width: 40px
+}
+.tabui ul li span.n {
+    display:block;
+    float:left;
+    width: 120px
+}
+.tabui ul li span.o {
+    display:block;
+    float:left;
+    width: 80px
+}
+
+.tabui ul li span.m {
+    display:block;
+    float:left;
+    width: 100px
+}
+
+.commonbar {
+    background: #FFF;
+}
+
+.commonbar ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.commonbar ul li {
+    width: 90%;
+    text-align: left;
+    float: left;
+    line-height: 24px;
+    height: 24px;
+    padding: 2px;
+    border-bottom: dotted 1px #336600
+}
+
+.account ul li img {
+    border: 0px;
+}
+
+.srch {
+    padding: 4px;
+    margin: 0px 0px 0px 0px;
+    background: #efefef url(../images/logoback.png) no-repeat center;
+    border: solid 1px #999;
+}
+
+.srchcxt {
+    padding: 10px;
+    margin: 0px 0px 0px 0px;
+    background: #efefef;
+    border-bottom: solid 1px #999;
+    border-left: solid 1px #999;
+    border-right: solid 1px #999;
+}
+
+.prjwin td {
+    font-size: 12px;
+    font-weight: bold;
+    height: 20px;
+}
+
+.mainspace {
+    margin: 20px;
+    padding: 0;
+}
+
+.tip {
+    border-bottom: dotted 1px #333;
+}
+
+.drag {
+    width: 265px;
+    height: 30px;
+    padding: 10px;
+    margin: 5px;
+    line-height: 30px;
+    border: 1px solid #db9315;
+    font-size: 14;
+    font-weight: bolder;
+    background: #ced7f7 url(../images/rightc.png) no-repeat right top;
+}
+
+.blk {
+    margin: 0 auto;
+}
+
+.blk ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.blk li {
+    display: block;
+    float: left;
+    width: 154px;
+    height: 30px;
+    padding: 10px;
+    margin: 5px;
+    line-height: 30px;
+    border: 1px solid #db9315;
+    text-align: center;
+
+    background: #ced7f7 url(../images/rightc.png) no-repeat right top;
+}
+
+.blk a {
+    font-size: 14;
+    font-weight: bolder;
+}
+
+.dragb {
+    width: 365px;
+    height: 30px;
+    padding: 10px;
+    margin: 5px;
+    line-height: 30px;
+    border: 1px solid #db9315;
+    font-size: 14;
+    font-weight: bolder;
+    background: #ced7f7 url(../images/rightc.png) no-repeat right top;
+}
+
+.dp {
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+
+.over {
+    background: #f6f6d3;
+}

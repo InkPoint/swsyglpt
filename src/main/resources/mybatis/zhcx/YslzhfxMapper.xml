@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.dao.YslzhfxMapper">
+    <select id="yslzhfxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select a.*,b.*,
+        decode(b.upqsl1q,0,0,round(a.currqsl1q/b.upqsl1q*100,2)) tb1,
+        decode(b.upqsl2q,0,0,round(a.currqsl2q/b.upqsl2q*100,2)) tb2,
+        decode(b.upqsl3q,0,0,round(a.currqsl3q/b.upqsl3q*100,2)) tb3,
+        decode(b.upqsl4q,0,0,round(a.currqsl4q/b.upqsl4q*100,2)) tb4,
+        decode(b.upqsl4q,0,0,round(a.currqsl1q/b.upqsl4q*100,2)) hb1,
+        decode(a.currqsl1q,0,0,round(a.currqsl2q/a.currqsl1q*100,2)) hb2,
+        decode(a.currqsl2q,0,0,round(a.currqsl3q/a.currqsl2q*100,2)) hb3,
+        decode(a.currqsl3q,0,0,round(a.currqsl4q/a.currqsl3q*100,2)) hb4
+         from
+        (select
+        nvl(sum((case when t2.jdbz = 1 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl1q,
+        nvl(sum((case when t2.jdbz = 2 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl2q,
+        nvl(sum((case when t2.jdbz = 3 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl3q,
+        nvl(sum((case when t2.jdbz = 4 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl4q
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+           <if test="svo.ssnf==null or svo.ssnf == ''">
+               and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+           </if>
+            <if test="svo.ssnf!=null and svo.ssnf != ''">
+                and to_char(t1.qslssqq, 'yyyy') in(  #{svo.ssnf})
+            </if>
+           <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+               and t1.syqy in(  #{svo.syqydm})
+           </if>
+           <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+               and t1.sylx in(  #{svo.sylxdm})
+           </if>
+
+           <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+               and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+           </if>
+           <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+               and t1.tsyslb in(  #{svo.tsyslxdm})
+           </if>
+           and t2.jdbz is not null
+        ) a,
+        (
+        select
+        nvl(sum((case when t2.jdbz = 1 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl1q,
+        nvl(sum((case when t2.jdbz = 2 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl2q,
+        nvl(sum((case when t2.jdbz = 3 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl3q,
+        nvl(sum((case when t2.jdbz = 4 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl4q
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy')-1)
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') in(#{svo.ssnf}-1)
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+           and t2.jdbz is not null
+        ) b
+    </select>
+    <select id="sylxyslQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select b.sylx_dm,b.sylxmc,nvl(a.sylxysl,0) sylxysl from (select
+        t1.sylx,sum(nvl(t2.bqqsl, 0)) as sylxysl
+
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  #{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+           and t2.jdbz is not null
+           group by t1.sylx) a,dm_gy_sylx b where a.sylx(+)=b.sylx_dm
+    </select>
+    <select id="hyyslQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select b.qyshy_dm,b.qyshymc,nvl(a.sylxysl,0) sylxysl from (select
+        t1.qyshy,sum(nvl(t2.bqqsl, 0)) as sylxysl
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  #{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+         and t2.jdbz is not null
+           group by t1.qyshy) a,dm_gy_qyshy b where a.qyshy(+)=b.qyshy_dm
+    </select>
+
+    <select id="dxsccqlxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select b.dxsccqlx_dm,b.dxsccqlxmc,nvl(a.ysl,0) ysl from (select
+        t1.dxsccqlx,sum(nvl(t2.bqqsl, 0)) as ysl
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  #{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+           and t2.jdbz is not null
+           group by t1.dxsccqlx) a,dm_gy_dxsccqlx b where a.dxsccqlx(+)=b.dxsccqlx_dm
+    </select>
+    <select id="tsyslxQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.tsyslb_dm,b.tsyslbmc,nvl(a.ysl,0) ysl from (select
+        t1.tsyslb,sum(nvl(t2.bqqsl, 0)) as ysl
+          from cx_ysltz t1, cx_ysltzmx t2
+         where t1.yxbz = 'Y'
+           and t2.yxbz = 'Y'
+           and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  to_char(sysdate,'yyyy'))
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') in(  #{svo.ssnf})
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+           and t2.jdbz is not null
+           group by t1.tsyslb) a,dm_gy_tsyslb b where a.tsyslb(+)=b.tsyslb_dm
+    </select>
+    <select id="nfyslqsQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.ysnf, nvl(a.sylxysl,0) sylxysl from (select
+        to_char(t1.qslssqq, 'yyyy') ysnf,sum(nvl(t2.bqqsl, 0)) as sylxysl
+        from cx_ysltz t1, cx_ysltzmx t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   to_char(sysdate,'yyyy')
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   to_char(sysdate,'yyyy')-10
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   #{svo.ssnf}
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   #{svo.ssnf}-10
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != '' and svo.syqydm!='all'">
+            and t1.syqy in(  #{svo.syqydm})
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != '' and svo.sylxdm!='all'">
+            and t1.sylx in(  #{svo.sylxdm})
+        </if>
+
+        <if test="svo.dxsccqkxdm!=null and svo.dxsccqkxdm != '' and svo.dxsccqkxdm!='all'">
+            and t1.dxsccqlx in(  #{svo.dxsccqkxdm})
+        </if>
+        <if test="svo.tsyslxdm!=null and svo.tsyslxdm != '' and svo.tsyslxdm!='all'">
+            and t1.tsyslb in(  #{svo.tsyslxdm})
+        </if>
+        and t2.jdbz is not null
+        group by to_char(t1.qslssqq, 'yyyy'))a ,(
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            select to_char(sysdate,'yyyy') -0 ysnf from dual
+            union
+            select to_char(sysdate,'yyyy') -1 from dual
+            union
+            select to_char(sysdate,'yyyy') -2 from dual
+            union
+            select to_char(sysdate,'yyyy') -3 from dual
+            union
+            select to_char(sysdate,'yyyy') -4 from dual
+            union
+            select to_char(sysdate,'yyyy') -5 from dual
+            union
+            select to_char(sysdate,'yyyy') -6 from dual
+            union
+            select to_char(sysdate,'yyyy') -7 from dual
+            union
+            select to_char(sysdate,'yyyy') -8 from dual
+            union
+            select to_char(sysdate,'yyyy') -9 from dual
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            select #{svo.ssnf} -0 ysnf from dual
+            union
+            select #{svo.ssnf} -1 from dual
+            union
+            select #{svo.ssnf} -2 from dual
+            union
+            select #{svo.ssnf} -3 from dual
+            union
+            select #{svo.ssnf} -4 from dual
+            union
+            select #{svo.ssnf} -5 from dual
+            union
+            select #{svo.ssnf} -6 from dual
+            union
+            select #{svo.ssnf} -7 from dual
+            union
+            select #{svo.ssnf} -8 from dual
+            union
+            select #{svo.ssnf} -9 from dual
+        </if>
+
+
+        ) b where a.ysnf(+)=b.ysnf order by b.ysnf
+    </select>
+
+
+
+
+
+
+
+    <!--地下水超采区类型 贺明超-->
+
+    <select id="dxsccqlxdmQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+          select id, text
+          from (select 'all' id, '全部' text, 1 typeid
+                  from dual
+                union
+                select dxsccqlx_dm, dxsccqlxmc, 2
+                  from dm_gy_dxsccqlx
+                 where yxbz = 'Y')
+         order by typeid, id
+    </select>
+    <!--特殊用水行业 贺明超-->
+
+    <select id="tsyslxdmQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+          select id, text
+          from (select 'all' id, '全部' text, 1 typeid
+                  from dual
+                union
+                select tsyslb_dm, tsyslbmc, 2
+                  from dm_gy_tsyslb
+                 where yxbz = 'Y')
+         order by typeid, id
+    </select>
+</mapper>

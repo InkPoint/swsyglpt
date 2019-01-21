@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.jbxxwh.dao.YshxxwhMapper">
+
+    <!--用水户信息维护初始化查询-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+        SELECT * FROM (
+            SELECT T1.YSHDJXH
+                    ,T3.QSKSZD
+                    ,T1.NSRMC
+                    ,T1.SHXYDM
+                    ,T1.NSRSBH
+                    ,T1.FDDBRXM
+                    ,T1.FDDBRLXDH
+                    ,T1.BSYXM
+                    ,T1.BSYLXDH
+                    ,T1.DWDZ
+                    ,T1.XZQH_DM
+                    ,T2.XZQHMC
+                    ,T1.YXBZ
+                    ,T1.LRRY_DM
+                    ,T1.LRRQ
+                    ,T1.XGRY_DM
+                    ,T1.XGRQ
+                    ,T1.YSHZH
+                    ,T1.CSMM
+            FROM DJ_YSHXXB T1,
+                  DM_GY_XZQH T2,
+                  DJ_SYXXB T3
+            WHERE T1.YXBZ = 'Y'
+                   AND T1.XZQH_DM = T2.XZQH_DM(+)
+                   AND T1.SYBH = T3.SYBH(+)
+                   ORDER BY T1.LRRQ DESC)S1 WHERE 1 = 1
+        <if test="svo.nsrmc != null">
+            AND S1.NSRMC LIKE '%' || #{svo.nsrmc,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="svo.xzqhmc != null">
+            AND S1.XZQHMC LIKE '%' || #{svo.xzqhmc,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--用水户信息逻辑删除-->
+    <update id="del" parameterType="java.util.HashMap">
+        UPDATE DJ_YSHXXB T
+                     SET  T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},
+                          T.XGRQ = sysdate,
+                          T.YXBZ = 'N'
+                   WHERE T.YSHDJXH = #{svo.yshdjxh,jdbcType=VARCHAR}
+    </update>
+    <!--新增用水户信息-->
+    <insert id="addData" parameterType="java.util.HashMap">
+      insert into DJ_YSHXXB(YSHDJXH,SYBH,NSRMC,SHXYDM,NSRSBH,FDDBRXM,FDDBRLXDH,
+                    BSYXM,BSYLXDH,DWDZ,XZQH_DM,YXBZ,LRRY_DM,LRRQ,YSHZH)
+           values (YSHDJXH(),#{svo.sybh,jdbcType=VARCHAR},#{svo.nsrmc,jdbcType=VARCHAR}
+                  ,#{svo.shxydm,jdbcType=VARCHAR},#{svo.nsrsbh,jdbcType=VARCHAR},#{svo.fddbrxm,jdbcType=VARCHAR}
+                  ,#{svo.fddbrlxdh,jdbcType=VARCHAR},#{svo.bsyxm,jdbcType=VARCHAR},#{svo.bsylxdh,jdbcType=VARCHAR}
+                  ,#{svo.dwdz,jdbcType=VARCHAR},#{svo.xzqh_dm,jdbcType=VARCHAR},'Y',#{svo.lrry_dm,jdbcType=VARCHAR},sysdate,YSHZH())
+    </insert>
+    <!--根据用水户登记序号（回填数据）-->
+    <select id="backfillData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT T1.YSHDJXH
+                ,T3.QSKSZD
+                ,T1.NSRMC
+                ,T1.SHXYDM
+                ,T1.NSRSBH
+                ,T1.FDDBRXM
+                ,T1.FDDBRLXDH
+                ,T1.BSYXM
+                ,T1.BSYLXDH
+                ,T1.DWDZ
+                ,T1.XZQH_DM
+                ,T2.XZQHMC
+                ,T1.YXBZ
+                ,T1.LRRY_DM
+                ,T1.LRRQ
+                ,T1.XGRY_DM
+                ,T1.XGRQ
+          FROM DJ_YSHXXB T1,
+                DM_GY_XZQH T2,
+                DJ_SYXXB T3
+         WHERE T1.YXBZ = 'Y'
+                AND T1.XZQH_DM = T2.XZQH_DM(+)
+                AND T1.SYBH = T3.SYBH(+)
+            <if test="svo.yshdjxh != null">
+                AND T1.YSHDJXH LIKE '%' || #{svo.yshdjxh,jdbcType=VARCHAR} || '%'
+            </if>
+    </select>
+    <!--保存编辑后的(用水户信息)-->
+    <update id="saveEditData" parameterType="java.util.HashMap">
+      UPDATE DJ_YSHXXB T
+              SET T.NSRMC = #{svo.nsrmc,jdbcType=VARCHAR},--纳税人名称
+                  T.NSRSBH = #{svo.nsrsbh,jdbcType=VARCHAR},--纳税人识别号
+                  T.SHXYDM = #{svo.shxydm,jdbcType=VARCHAR},--社会信用代码
+                  T.FDDBRXM = #{svo.fddbrxm,jdbcType=VARCHAR},--法定代表人姓名
+                  T.FDDBRLXDH = #{svo.fddbrlxdh,jdbcType=VARCHAR},--法定代表人联系电话
+                  T.BSYXM = #{svo.bsyxm,jdbcType=VARCHAR},--办税员姓名
+                  T.BSYLXDH = #{svo.bsylxdh,jdbcType=VARCHAR},--办税员联系电话
+                  T.DWDZ = #{svo.dwdz,jdbcType=VARCHAR},--单位地址
+                  T.XZQH_DM = #{svo.xzqh_dm,jdbcType=VARCHAR},--行政区划代码
+                  T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},--修改人员代码
+                  T.XGRQ = sysdate
+              WHERE T.YSHDJXH = #{svo.yshdjxh,jdbcType=VARCHAR}
+    </update>
+    <!--注册校验-->
+    <select id="certifiedCheck" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+        SELECT T.NSRSBH FROM DJ_YSHXXB T WHERE T.YXBZ = 'Y' AND T.NSRSBH = #{svo.nsrsbh,jdbcType=VARCHAR}
+    </select>
+    <!--编辑校验-->
+    <select id="editCheck" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+        SELECT T.NSRSBH FROM DJ_YSHXXB T WHERE T.YXBZ = 'Y' AND T.NSRSBH = #{svo.nsrsbh,jdbcType=VARCHAR}
+    </select>
+    <!--水源地点(菜单)-->
+    <select id="syddcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+       SELECT T.SYBH ID,T.QSKSZD TEXT FROM DJ_SYXXB T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--行政区划(菜单)-->
+    <select id="xzqhcd" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+      SELECT T.XZQH_DM ID,T.XZQHMC TEXT FROM DM_GY_XZQH T WHERE T.YXBZ = 'Y'
+    </select>
+    <!--是否在使用中-->
+    <select id="whetherInUse" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+         SELECT DISTINCT F1.YSHZH FROM (
+           SELECT DISTINCT H1.YSHDJXH,H2.YSHZH FROM (
+             SELECT S1.YSHDJXH FROM (
+                 SELECT * FROM DJ_SYXXB T1,DJ_YSHSYGXB T2
+                        WHERE 1=1
+                              AND T1.YXBZ = 'Y'
+                              AND T1.SYBH = T2.SYBH(+))S1,DJ_YSHXXB S2
+                                  WHERE S1.YSHDJXH = S2.YSHDJXH(+))H1,DJ_YSHXXB H2
+                                        WHERE H1.YSHDJXH IS NOT NULL
+                                              AND H1.YSHDJXH = H2.YSHDJXH(+))F1
+                                                  WHERE F1.YSHZH IS NOT NULL
+                                                        AND F1.YSHZH = #{svo.yshzh,jdbcType=VARCHAR}
+    </select>
+    <!--用户查询（个体）-->
+    <select id="userQuery" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.YshxxwhVO">
+        SELECT * FROM (
+            SELECT T1.YSHDJXH
+                    ,T3.QSKSZD
+                    ,T1.NSRMC
+                    ,T1.SHXYDM
+                    ,T1.NSRSBH
+                    ,T1.FDDBRXM
+                    ,T1.FDDBRLXDH
+                    ,T1.BSYXM
+                    ,T1.BSYLXDH
+                    ,T1.DWDZ
+                    ,T1.XZQH_DM
+                    ,T2.XZQHMC
+                    ,T1.YXBZ
+                    ,T1.LRRY_DM
+                    ,T1.LRRQ
+                    ,T1.XGRY_DM
+                    ,T1.XGRQ
+                    ,T1.YSHZH
+            FROM DJ_YSHXXB T1,
+                  DM_GY_XZQH T2,
+                  DJ_SYXXB T3
+            WHERE T1.YXBZ = 'Y'
+                   AND T1.XZQH_DM = T2.XZQH_DM(+)
+                   AND T1.SYBH = T3.SYBH(+)
+                   ORDER BY T1.LRRQ DESC)S1 WHERE 1 = 1
+                   AND S1.YSHZH = #{svo.yshzh,jdbcType=VARCHAR}
+    </select>
+    <!--保存用户编辑(个体)-->
+    <update id="saveUserEdits" parameterType="java.util.HashMap">
+      UPDATE DJ_YSHXXB T
+              SET
+                  T.FDDBRLXDH = #{svo.fddbrlxdh,jdbcType=VARCHAR},--法定代表人联系电话
+                  T.BSYXM = #{svo.bsyxm,jdbcType=VARCHAR},--办税员姓名
+                  T.BSYLXDH = #{svo.bsylxdh,jdbcType=VARCHAR},--办税员联系电话
+                  T.XGRY_DM = #{svo.xgry_dm,jdbcType=VARCHAR},--修改人员代码
+                  T.XGRQ = sysdate
+              WHERE T.YSHDJXH = #{svo.yshdjxh,jdbcType=VARCHAR}
+    </update>
+</mapper>

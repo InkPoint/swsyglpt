@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.jbxxwh.dao.SyqywhMapper">
+    <!--水源区域维护 贺明超-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t1.*, z1.user_name fzrmc, z2.syztmc
+      from DM_GY_SYQY t1, acl_user z1, dm_gy_syzt z2
+     where t1.fzr_dm = z1.user_code
+       and z2.yxbz = 'Y'
+       and z2.syzt_dm = t1.syzt_dm
+       and t1.yxbz = 'Y' order by t1.syqy_dm asc
+    </select>
+    <select id="fzrQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+        select t4.user_code ID, t2.org_name||'>'|| t3.station_name||'>'|| t4.user_name TEXT
+          from acl_user_group            t0,
+               acl_organize_station_xref t1,
+               acl_organize              t2,
+               acl_station               t3,
+               acl_user                  t4,
+               dm_gy_gwys                t5
+         where t0.xref_id = t1.xref_id
+           and t1.station_id = t3.station_id
+           and t1.org_id = t2.org_id
+           and t0.user_id = t4.user_id
+           and t3.station_id = t5.acl_station_id
+           and t5.gw_dm = '002'
+    </select>
+    <select id="syztQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+        select syzt_dm id,syztmc text from dm_gy_syzt where yxbz='Y'
+    </select>
+    <!--新增用水户信息-->
+    <insert id="addData" parameterType="java.util.HashMap">
+      insert into dm_gy_syqy (SYQY_DM, SYQYSMC, SYZT_DM,  FZR_DM, LRRY_DM, FZRJG_DM, LRRQ, XGRY_DM, XGRQ, YXBZ)
+        values (syqydm, #{svo.syqymc,jdbcType=VARCHAR}, #{svo.syztdm,jdbcType=VARCHAR},  #{svo.fzrdm,jdbcType=VARCHAR}
+        , #{currUserCode,jdbcType=VARCHAR}, #{currOrgCode,jdbcType=VARCHAR}, sysdate, null, null, 'Y')
+    </insert>
+    <update id="modifyData" parameterType="java.util.HashMap">
+        update dm_gy_syqy t1 set t1.syqysmc=#{svo.syqymc},t1.syzt_dm=#{svo.syztdm},t1.fzr_dm=#{svo.fzrdm} where  t1.syqy_dm =#{svo.syqydm} and t1.lrry_dm=#{currUserCode}
+    </update>
+    <!--新增用水户信息-->
+    <insert id="deleteList" parameterType="java.util.HashMap">
+      update dm_gy_syqy t1 set t1.yxbz='N' where  t1.syqy_dm in
+       <foreach close=")" collection="svo.syqydmArray" item="item" open="(" separator=",">
+           #{item}
+       </foreach>
+       and t1.lrry_dm= #{currUserCode}
+    </insert>
+</mapper>

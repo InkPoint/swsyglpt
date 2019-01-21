@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.dao.SyxxcxMapper">
+    <!--税源区域集合 贺明超-->
+    <select id="syqyQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+        select id, text
+          from (select 'all' id, '全部' text, 1 typeid
+                  from dm_gy_sylx
+                 where yxbz = 'Y'
+                union
+                select SYQY_DM, SYQYSMC, 2
+                  from dm_gy_syqy
+                 where yxbz = 'Y'
+                <if test='isAll != true'>
+                  and  fzr_dm=#{currUserCode}
+                </if>
+                 )
+         order by typeid, id
+    </select>
+    <!--税源类型集合 贺明超-->
+
+    <select id="sylxQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+         select id, text
+          from (select 'all' id, '全部' text, 1 typeid
+                  from dm_gy_sylx
+                 where yxbz = 'Y'
+                union
+                select sylx_dm, sylxmc, 2
+                  from dm_gy_sylx
+                 where yxbz = 'Y')
+         order by typeid, id
+    </select>
+    <!--税源状态集合 贺明超-->
+
+    <select id="syztQuery"  parameterType="java.util.HashMap" resultType="com.xasw.common.model.Select2VO">
+         select id, text
+          from (select 'all' id, '全部' text, 1 typeid
+                  from dm_gy_sylx
+                 where yxbz = 'Y'
+                union
+                select syzt_dm, syztmc, 2
+                  from dm_gy_syzt
+                 where yxbz = 'Y')
+         order by typeid, id
+    </select>
+
+    <!--税源状态集合 贺明超-->
+
+    <select id="syxxjhQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+         select
+            t1.SYDJXH,
+            t1.SYBH,
+            t1.SYQY_DM,
+            t1.SYZT_DM,
+            t1.QSKSZD,
+            t1.QSXKZBH,
+            t1.QSXKZZT_DM,
+            z8.QSXKZZTMC,
+            t1.QSXKSPJG_DM,
+            t1.QSYT_DM,
+            t1.QSKSL,
+            t1.ZJLGS,
+            t1.SFZXJC,
+            t1.FJLGS,
+            t1.SYLX_DM,
+            t1.QSHY_DM,
+            t1.TSYSLB_DM,
+            t1.QSXKYXQQ,
+            t1.QSXKYXQZ,
+            t1.DXSQSDGSGWSFFG,
+            t1.DXSCCQLX_DM,
+            t1.XZQH_DM,
+            t1.YXBZ,
+            t1.SZYFEBZ,
+            t1.JD,
+            t1.LRRY_DM,
+            t1.LRRQ,
+            t1.XGRY_DM,
+            t1.XGRQ,
+            t1.WD,
+            t1.QSLHDJG_DM,
+            t1.NQSJH,
+            t1.QSFS_DM,
+            t1.TSDD,
+            t1.TSFS_DM,
+            t1.TSL,
+            t1.TSSZYQ,
+            t2.YSHDJXH,
+            t2.NSRMC,
+            t2.SHXYDM,
+            t2.NSRSBH,
+            t2.FDDBRXM,
+            t2.FDDBRLXDH,
+            t2.BSYXM,
+            t2.BSYLXDH,
+            t2.DWDZ,
+            t2.YSHZH,
+            t2.DJXH,
+            z1.syztmc,
+            z2.sylxmc,
+            z3.syqysmc,
+            z4.qsytmc,
+            z5.qyshymc,
+            z6.tsyslbmc,
+            z7.sfmc SFZXJCMC
+          from DJ_SYXXB t1, dj_yshxxb t2,dj_yshsygxb t3,
+               dm_gy_syzt z1,dm_gy_sylx z2,dm_gy_syqy z3,dm_gy_qsyt z4,DM_GY_QYSHY z5,DM_GY_TSYSLB z6,dm_gy_sf z7,dm_gy_qsxkzzt z8
+         where
+            z1.yxbz='Y'
+           and z2.yxbz='Y'
+           and z3.yxbz='Y'
+           and z4.yxbz='Y'
+           and z5.yxbz='Y'
+           and z6.yxbz='Y'
+           and z7.yxbz='Y'
+           and z8.yxbz='Y'
+           and z1.syzt_dm(+)=t1.syzt_dm
+           and z2.sylx_dm(+)=t1.sylx_dm
+           and z3.syqy_dm(+)=t1.syqy_dm
+        <if test='isAll != true'>
+           and  z3.fzr_dm=#{currUserCode}
+          </if>
+           and z4.qsyt_dm(+)=t1.qsyt_dm
+           and z5.qyshy_dm(+)=t1.qshy_dm
+           and z6.tsyslb_dm(+)=t1.tsyslb_dm
+           and z7.sf_dm(+)=t1.sfzxjc
+           and z8.QSXKZZT_DM(+)=t1.QSXKZZT_DM
+           and t1.yxbz = 'Y'
+           and t1.sybh = t3.sybh(+)
+           and t3.yshdjxh=t2.yshdjxh(+)
+           <if test="svo.syztdm!='' and svo.syztdm!='all'">
+               and trim(t1.syzt_dm) = trim(#{svo.syztdm})
+           </if>
+            <if test="svo.sylxdm!='' and svo.sylxdm!='all'">
+                and trim(t1.sylx_dm)  = trim(#{svo.sylxdm})
+
+            </if>
+            <if test="svo.syqydm!='' and svo.syqydm!='all'">
+                and trim(t1.syqy_dm) = trim(#{svo.syqydm})
+            </if>
+            <if test="svo.qsdd!='' and svo.qsdd!=null ">
+                and t1.QSKSZD like '%${svo.qsdd}%'
+            </if>
+
+    </select>
+
+    <select id="syxxdetailQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select
+        t1.SYDJXH,
+        t1.SYBH,
+        t1.SYQY_DM,
+        t1.SYZT_DM,
+        t1.QSKSZD,
+        t1.QSXKZBH,
+        t1.QSXKZZT_DM,
+        z12.QSXKZZTMC,
+        t1.QSXKSPJG_DM,
+        t1.QSYT_DM,
+        t1.QSKSL,
+        t1.ZJLGS,
+        t1.SFZXJC,
+        t1.FJLGS,
+        t1.SYLX_DM,
+        t1.QSHY_DM,
+        t1.TSYSLB_DM,
+        to_char(t1.QSXKYXQQ,'yyyy-MM-dd') QSXKYXQQ,
+        to_char(t1.QSXKYXQZ,'yyyy-MM-dd') QSXKYXQZ,
+        t1.DXSQSDGSGWSFFG,
+        z11.sfmc DXSQSDGSGWSFFGMC,
+        t1.DXSCCQLX_DM,
+        z10.DXSCCQLXMC,
+        t1.XZQH_DM,
+        z8.xzqhmc,
+        t1.YXBZ,
+        t1.SZYFEBZ,
+        t1.JD,
+        t1.LRRY_DM,
+        t1.LRRQ,
+        t1.XGRY_DM,
+        t1.XGRQ,
+        t1.WD,
+        t1.QSLHDJG_DM,
+        t1.NQSJH,
+        t1.QSFS_DM,
+        z9.QSFSMC,
+        t1.TSDD,
+        t1.TSFS_DM,
+        t1.TSL,
+        t1.TSSZYQ,
+        t2.YSHDJXH,
+        t2.NSRMC,
+        t2.SHXYDM,
+        t2.NSRSBH,
+        t2.FDDBRXM,
+        t2.FDDBRLXDH,
+        t2.BSYXM,
+        t2.BSYLXDH,
+        t2.DWDZ,
+        t2.YSHZH,
+        t2.DJXH,
+        z1.syztmc,
+        z2.sylxmc,
+        z3.syqysmc,
+        z4.qsytmc,
+        z5.qyshymc,
+        z6.tsyslbmc,
+        z7.sfmc SFZXJCMC
+        from DJ_SYXXB t1, dj_yshxxb t2,dj_yshsygxb t3,
+        dm_gy_syzt z1,dm_gy_sylx z2,dm_gy_syqy z3,dm_gy_qsyt z4,DM_GY_QYSHY z5,DM_GY_TSYSLB z6,dm_gy_sf z7,dm_gy_xzqh z8,dm_gy_qsfsdm z9,DM_GY_DXSCCQLX z10,dm_gy_sf z11,dm_gy_qsxkzzt z12
+        where
+        z1.yxbz='Y'
+        and z2.yxbz='Y'
+        and z3.yxbz='Y'
+        and z4.yxbz='Y'
+        and z5.yxbz='Y'
+        and z6.yxbz='Y'
+        and z7.yxbz='Y'
+        and z8.yxbz='Y'
+        and z9.yxbz='Y'
+        and z10.yxbz='Y'
+        and z11.yxbz='Y'
+        and z12.yxbz='Y'
+        and z1.syzt_dm(+)=t1.syzt_dm
+        and z2.sylx_dm(+)=t1.sylx_dm
+        and z3.syqy_dm(+)=t1.syqy_dm
+        and z4.qsyt_dm(+)=t1.qsyt_dm
+        and z5.qyshy_dm(+)=t1.qshy_dm
+        and z6.tsyslb_dm(+)=t1.tsyslb_dm
+        and z7.sf_dm(+)=t1.sfzxjc
+        and z8.xzqh_dm(+)=t1.xzqh_dm
+        and z9.qsfs_dm(+)=t1.qsfs_dm
+        and z10.dxsccqlx_dm(+)=t1.dxsccqlx_dm
+        and z11.sf_dm(+)=t1.DXSQSDGSGWSFFG
+        and z12.QSXKZZT_DM(+)=t1.QSXKZZT_DM
+        and t1.yxbz = 'Y'
+        and t1.sybh = t3.sybh(+)
+        and t3.yshdjxh=t2.yshdjxh(+)
+        and t1.SYDJXH=#{svo.sydjxh}
+    </select>
+
+
+
+</mapper>

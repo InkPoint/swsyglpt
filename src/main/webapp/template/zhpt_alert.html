@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- BEGIN META -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="Olive Enterprise">
+<!-- END META -->
+
+<!-- BEGIN SHORTCUT ICON -->
+<link rel="shortcut icon" href="img/favicon.ico">
+<!-- END SHORTCUT ICON -->
+<title>应用平台</title>
+<!-- BEGIN STYLESHEET-->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- BOOTSTRAP CSS -->
+<link href="css/bootstrap-reset.css" rel="stylesheet">
+<!-- BOOTSTRAP CSS -->
+<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+<!-- FONT AWESOME ICON CSS -->
+<link href="css/style.css" rel="stylesheet">
+<!-- THEME BASIC CSS -->
+<link href="css/style-responsive.css" rel="stylesheet">
+<!-- THEME RESPONSIVE CSS -->
+<link href="assets/morris.js-0.4.3/morris.css" rel="stylesheet">
+<!-- MORRIS CHART CSS -->
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js">
+</script>
+<script src="js/respond.min.js">
+</script>
+<![endif]-->
+<script src="js/jquery-1.8.3.min.js" ></script><!-- BASIC JQUERY 1.8.3 LIB. JS --> 
+<script src="js/bootstrap.min.js" ></script><!-- BOOTSTRAP JS --> 
+
+</head>
+<body>
+<h3 class="header">相关提示</h3>
+<div class="container" style="padding:100px 10px;" >
+	<button type="button" class="btn btn-default" title="Popover title"  
+			data-container="body" data-toggle="popover" data-placement="left" 
+			data-content="左侧的 Popover 中的一些内容">
+		左侧的 Popover
+	</button>
+	<button type="button" class="btn btn-primary" title="Popover title"  
+			data-container="body" data-toggle="popover" data-placement="top" 
+			data-content="顶部的 Popover 中的一些内容">
+		顶部的 Popover
+	</button>
+	<button type="button" class="btn btn-success" title="Popover title"  
+			data-container="body" data-toggle="popover" data-placement="bottom" 
+			data-content="底部的 Popover 中的一些内容">
+		底部的 Popover
+	</button>
+	<button type="button" class="btn btn-warning" title="Popover title"  
+			data-container="body" data-toggle="popover" data-placement="right" 
+			data-content="右侧的 Popover 中的一些内容">
+		右侧的 Popover
+	</button>
+</div>
+<script>
+$(function () { 
+	$("[data-toggle='popover']").popover();
+});
+</script>
+<h3>弹出窗口</h3>
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+	模态框演示
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					模态框（Modal）
+				</h4>
+			</div>
+			<div class="modal-body">
+				在这里添加一些文本
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary">
+					提交更改
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<h3>警告框</h3>
+<div id="myAlert" class="alert alert-success">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>成功！</strong>结果是成功的。
+</div>
+<div id="myAlert" class="alert alert-warning">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>警告！</strong>您的网络连接有问题。
+</div>
+
+
+<script>
+$(function(){
+    $(".close").click(function(){
+        $("#myAlert").alert();
+    });
+});
+</script>
+         
+
+
+
+ 
+
+<!-- END JS -->
+</body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.TzggMapper">
+
+    <!--通知公告（初始化查询）-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT S1.TZGGXH
+                ,S1.WZBT
+                ,S1.WZJJ
+                --,S1.WZNR
+                ,S1.ZZ
+                ,S1.FBR
+                ,TO_CHAR(S1.FBSJ, 'yyyy-MM-dd HH24:mi:ss') FBSJ
+                ,S1.FBZT
+                ,S1.FJURL
+                ,S1.XGR
+                ,S1.XGSJ
+                ,S1.YXBZ
+                ,S1.FBZTMC
+                ,S1.AUTHOR
+        FROM (SELECT T1.*,T2.FBZTMC,T3.USER_NAME AUTHOR
+            FROM DJ_TZGGB T1,
+                 DM_GY_FBZT T2,
+                 ACL_USER T3
+        WHERE T1.YXBZ = 'Y'
+               AND T1.FBZT = T2.FBZT_DM(+)
+               AND T1.ZZ = T3.USER_CODE(+)
+               ORDER BY T1.FBSJ DESC)S1
+        <if test="svo.wzbt != null">
+           WHERE S1.WZBT LIKE '%' || #{svo.wzbt,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--文章预览-->
+    <select id="theArticlePreview" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.TzggVO">
+      SELECT T1.WZBT,
+              TO_CHAR(T1.FBSJ, 'yyyy-MM-dd HH24:mm:ss') FBSJ,
+              T2.USER_NAME USERNAME,
+              T1.WZNR
+        FROM DJ_TZGGB T1,ACL_USER T2
+            WHERE T1.ZZ = T2.USER_CODE(+)
+              AND T1.TZGGXH  = #{svo.tzggxh,jdbcType=VARCHAR}
+    </select>
+    <!--条件查询(所要编辑的文档的回置)-->
+    <select id="conditionQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.TzggVO">
+      SELECT T1.WZBT,T1.WZJJ,T1.WZNR FROM DJ_TZGGB T1 WHERE T1.TZGGXH  = #{svo.tzggxh,jdbcType=VARCHAR}
+    </select>
+    <!--保存编辑后的文章-->
+    <update id="saveEdit" parameterType="java.util.HashMap">
+        UPDATE DJ_TZGGB T
+             SET  T.WZBT = #{svo.wzbt,jdbcType=VARCHAR},
+                  T.WZJJ = #{svo.wzjj,jdbcType=VARCHAR},
+                  T.WZNR = #{svo.wznr,jdbcType=CLOB},
+                  T.XGR = #{svo.xgr,jdbcType=VARCHAR},
+                  T.XGSJ = sysdate
+           WHERE T.TZGGXH = #{svo.tzggxh,jdbcType=VARCHAR}
+    </update>
+    <!--删除文章(逻辑删除)-->
+    <update id="del" parameterType="java.util.HashMap">
+        UPDATE DJ_TZGGB T
+             SET  T.XGR = #{svo.xgr,jdbcType=VARCHAR},
+                  T.XGSJ = sysdate,
+                  T.YXBZ = 'N'
+           WHERE T.TZGGXH = #{svo.tzggxh,jdbcType=VARCHAR}
+    </update>
+    <!--发布-->
+    <update id="issue" parameterType="java.util.HashMap">
+        UPDATE DJ_TZGGB T
+             SET  T.FBZT = '1'
+           WHERE T.TZGGXH = #{svo.tzggxh,jdbcType=VARCHAR}
+    </update>
+    <!--取消发布-->
+    <update id="unpublish" parameterType="java.util.HashMap">
+        UPDATE DJ_TZGGB T
+             SET  T.FBZT = '0'
+           WHERE T.TZGGXH = #{svo.tzggxh,jdbcType=VARCHAR}
+    </update>
+    <!--新增公告-->
+    <insert id="saveData" parameterType="java.util.HashMap">
+    INSERT INTO DJ_TZGGB(TZGGXH,WZBT,WZJJ,WZNR,ZZ,FBR,FBSJ,FBZT,YXBZ)
+       VALUES(tzggxh(),#{svo.wzbt,jdbcType=VARCHAR},#{svo.wzjj,jdbcType=VARCHAR},#{svo.wznr,jdbcType=CLOB},
+            #{svo.zz,jdbcType=VARCHAR},#{svo.fbr,jdbcType=VARCHAR},sysdate,'1','Y')
+    </insert>
+    <!--公告列表(初始化查询 5 条)-->
+    <select id="announceList" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.TzggVO">
+        SELECT S.TZGGXH,S.WZBT FROM (
+            SELECT * FROM DJ_TZGGB T WHERE T.YXBZ = 'Y' ORDER BY T.FBSJ DESC)S
+                WHERE ROWNUM &lt; 6
+    </select>
+    <!--查看公告-->
+    <select id="viewNotice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT S1.TZGGXH
+        ,S1.WZBT
+        ,S1.WZJJ
+        ,S1.ZZ
+        ,S1.FBR
+        ,TO_CHAR(S1.FBSJ, 'yyyy-MM-dd HH24:mi:ss') FBSJ
+        ,S1.FBZT
+        ,S1.FJURL
+        ,S1.XGR
+        ,S1.XGSJ
+        ,S1.YXBZ
+        ,S1.FBZTMC
+        ,S1.AUTHOR
+        FROM (SELECT T1.*,T2.FBZTMC,T3.USER_NAME AUTHOR
+        FROM DJ_TZGGB T1,
+        DM_GY_FBZT T2,
+        ACL_USER T3
+        WHERE T1.YXBZ = 'Y'
+        AND T1.FBZT = '1'
+        AND T1.FBZT = T2.FBZT_DM(+)
+        AND T1.ZZ = T3.USER_CODE(+)
+        ORDER BY T1.FBSJ DESC)S1
+        <if test="svo.wzbt != null">
+            WHERE S1.WZBT LIKE '%' || #{svo.wzbt,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+</mapper>

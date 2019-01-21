@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.skxx.SlzjhcMapper">
+    <!--获取报送属期-->
+    <select id="qsssq"   resultType="java.util.HashMap">
+        select to_char(add_months(trunc(sysdate, 'Q'), -3), 'yyyy-mm-dd') qslssqq,
+        to_char(trunc(sysdate, 'Q') - 1, 'yyyy-mm-dd') qslssqz,
+        to_char(sysdate, 'yyyy-mm-dd') dqrq
+        from dual
+    </select>
+    <!--信息明细(表数据)-->
+    <select id="getUser" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from acl_user t where t.user_code='${usercode}'
+    </select>
+    <!--反馈结果类型(下拉菜单)-->
+    <select id="fkjglxcd" parameterType="java.util.HashMap" resultType="com.xasw.skxx.model.SlzjhcVO">
+        select t.fkjglx id,t.fkjglxmc text from dm_gy_fkjglx t where t.fkjglx is not null
+    </select>
+    <!--核查结果类型(下拉菜单)-->
+    <select id="hcjglxcd" parameterType="java.util.HashMap" resultType="com.xasw.skxx.model.SlzjhcVO">
+        select t.hcjglx_dm id,t.hcjglxmc text from dm_gy_hcjglx t where t.yxbz ='Y'
+    </select>
+    <!--核定书查询-->
+    <select id="selectAll" parameterType="java.util.HashMap" resultType="com.xasw.skxx.model.SlzjhcVO">
+        select t.xxcjid,
+        t.hdsbh,
+        t.nsrsbh,
+        t.nsrmc,
+        a.sylxmc,
+        b.qyshymc,
+        c.dxsccqlxmc,
+        d.sfmc,
+        e.tsyslbmc,
+        f.hdjglxmc,
+        g.syqysmc syqymc,
+        to_char(t.shsj,'yyyy-mm-dd') shsj,
+        h.fkjglx,
+        decode(h.fkjglx,
+        '01',
+        '已反馈未核查',
+        '02',
+        '已反馈已核查') fkjglxmc,
+        decode(h.hcjglx,
+        '01',
+        '未核查',
+        '02',
+        '核查已完成',
+        '09',
+        '其他流程') hcjglxmc,
+        to_char(h.fksj, 'yyyy-mm-dd') fksj,
+        to_char(h.hcsj, 'yyyy-mm-dd') hcsj
+        from hd_yslbshd     t,
+        dm_gy_sylx     a,
+        dm_gy_qyshy    b,
+        dm_gy_dxsccqlx c,
+        dm_gy_sf       d,
+        dm_gy_tsyslb   e,
+        dm_gy_hdjglx   f,
+        dm_gy_syqy     g,
+        jh_skslxxjhb   h
+        where t.sylx = a.sylx_dm(+)
+        and t.qyshy = b.qyshy_dm(+)
+        and t.dxsccqlx = c.dxsccqlx_dm(+)
+        and t.dxsqsddgsgw = d.sf_dm(+)
+        and t.tsyslb = e.tsyslb_dm(+)
+        and t.hdjglx_dm = f.hdjglx_dm(+)
+        and t.syqy = g.syqy_dm(+)
+        and t.hdsbh = h.hdsbh
+        and t.yxbz = 'Y'
+        and t.hdjglx_dm = '03'
+        <if test="svo.shrdm != null">
+            and t.shr_dm like '%${svo.shrdm}%'
+        </if>
+        <if test="svo.nsrsbh != null">
+            and t.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc != null">
+            and t.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        order by t.shsj desc
+    </select>
+    <!--信息明细(表数据)-->
+    <select id="querytab" parameterType="java.util.Map" resultType="com.xasw.skxx.model.SlzjhcVO">
+        select *from HD_YSLBSHDMX t where t.xxcjid='${svo.xxcjid}' and t.yxbz='Y' order by t.lrsj desc
+    </select>
+
+    <!--信息录入-->
+    <insert id="newaddition" parameterType="java.util.HashMap">
+        insert into jh_skslxxjhb
+        (hdsbh,
+        djxh,
+        nsrsbh,
+        nsrmc,
+        skssqq,
+        skssqz,
+        skjnje,
+        dzsphm,
+        fkr,
+        fksj,
+        hcjglx,
+        yxbz,
+        fkjglx)
+        values
+        ('${svo.hdsbh}',
+        '${svo.djxh}',
+        '${svo.nsrsbh}',
+        '${svo.nsrmc}',
+        to_date('${svo.skssqq}','yyyy-mm-dd'),
+        to_date('${svo.skssqz}','yyyy-mm-dd'),
+        '${svo.skjnje}',
+        '${svo.dzsphm}',
+        '${svo.fkr}',
+        to_date('${svo.fksj}','yyyy-mm-dd'),
+        '01','Y','01')
+    </insert>
+
+    <!--核定书信息-->
+    <select id="hdsxx" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t.*,
+        a.sylxmc,
+        b.qyshymc,
+        c.dxsccqlxmc,
+        d.sfmc,
+        e.tsyslbmc,
+        f.hdjglxmc,
+        g.syqysmc syqymc
+        from hd_yslbshd     t,
+        dm_gy_sylx     a,
+        dm_gy_qyshy    b,
+        dm_gy_dxsccqlx c,
+        dm_gy_sf       d,
+        dm_gy_tsyslb   e,
+        dm_gy_hdjglx   f,
+        dm_gy_syqy     g
+        where t.sylx = a.sylx_dm(+)
+        and t.qyshy = b.qyshy_dm(+)
+        and t.dxsccqlx = c.dxsccqlx_dm(+)
+        and t.dxsqsddgsgw = d.sf_dm(+)
+        and t.tsyslb = e.tsyslb_dm(+)
+        and t.hdjglx_dm = f.hdjglx_dm(+)
+        and t.syqy = g.syqy_dm(+)
+        and t.yxbz = 'Y'
+        and t.xxcjid = '${xxcjid}'
+    </select>
+    <!--编辑时候初始化税款信息反馈数据-->
+    <select id="fkxxInit" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select h.hdsbh,
+               h.djxh,
+               h.nsrsbh,
+               h.nsrmc,
+               to_char(h.skssqq, 'yyyy-mm-dd') skssqq,
+               to_char(h.skssqz, 'yyyy-mm-dd') skssqz,
+               h.skjnje,
+               h.dzsphm,
+               h.fkr,
+               to_char(h.fksj,'yyyy-mm-dd') fksj,
+               h.hcr,
+               to_char(h.hcsj, 'yyyy-mm-dd') hcsj,
+               h.fkjglx,
+               h.hcjglx,
+               h.hcskje,
+               decode(h.fkjglx, '01', '已反馈未核查', '02', '已反馈已核查') fkjglxmc,
+               decode(h.hcjglx,
+                      '01',
+                      '未核查',
+                      '02',
+                      '核查已完成',
+                      '09',
+                      '其他流程') hcjglxmc
+          from hd_yslbshd t, jh_skslxxjhb h
+         where t.hdsbh = h.hdsbh(+)
+           and t.yxbz = 'Y'
+           and h.hdsbh = '${hdsbh}'
+    </select>
+
+    <!--反馈信息编辑-->
+    <update id="fkxxEdit" parameterType="java.util.HashMap">
+        update jh_skslxxjhb t
+           set t.djxh   = '${svo.djxh}',
+               t.nsrsbh = '${svo.nsrsbh}',
+               t.nsrmc  = '${svo.nsrmc}',
+               t.skssqq = to_date('${svo.skssqq}', 'yyyy-mm-dd'),
+               t.skssqz = to_date('${svo.skssqz}', 'yyyy-mm-dd'),
+               t.skjnje = '${svo.skjnje}',
+               t.dzsphm = '${svo.dzsphm}',
+               t.fkr    = '${svo.fkr}',
+               t.fksj   = to_date('${svo.fksj}', 'yyyy-mm-dd'),
+               t.hcr    ='${svo.hcr}',
+               t.hcsj   = to_date('${svo.hcsj}', 'yyyy-mm-dd'),
+               t.hcskje ='${svo.hcskje}',
+               t.hcjglx ='${svo.hcjglx}',
+               t.fkjglx = '02'
+         where t.yxbz = 'Y'
+           and t.hdsbh = '${svo.hdsbh}'
+    </update>
+</mapper>

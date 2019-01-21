@@ -1,0 +1,220 @@
+@charset "UTF-8";
+/*css 初始化 */
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+fieldset, img, input, button { 			/*fieldset组合表单中的相关元素*/
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline-style: none;
+}
+
+ul, ol {
+    list-style: none;				/*清除列表风格*/
+}
+
+input {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: "SimSun", "宋体";
+}
+
+select, input {
+    vertical-align: middle;
+}
+
+select, input, textarea {
+    font-size: 12px;
+    margin: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+/*防止多行文本框拖动*/
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+/*  去掉图片低测默认的3像素空白缝隙*/
+table {
+    border-collapse: collapse;			/*合并外边线*/
+}
+
+
+body {
+    font: 12px/150% microsoft yahei, Verdana, "\5b8b\4f53";	/*宋体，Unicode，统一码*/
+    color: #FFF;
+    background: #fff
+}
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1; /*IE/7/6*/
+}
+
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 100%;
+}
+
+s, i, em {
+    font-style: normal;
+    text-decoration: none;
+}
+/*整体盒子*/
+body,html {
+    width: 100%;
+    height: 100%;
+    background-color: #1F2226;
+}
+
+.active {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background-color:#00ADEE !important;
+}
+
+.current {
+    color:#00ADEE !important;
+}
+
+#main {
+    width: 100%;
+    height: 100%;
+    margin:0 auto;
+    background: url(../images/bg-new.png) no-repeat;
+    -webkit-background-size: cover;
+    background-size:cover;
+}
+
+/*顶部通栏*/
+.header {
+    width: 100%;
+    height: 64px;
+    line-height: 50px;
+    background-color: #272B32;
+    -webkit-box-shadow: 1px 1px 1px  #000;
+    -moz-box-shadow:1px 1px 1px #000;
+    box-shadow: 1px 1px 1px #000;
+    display: flex;
+    position: absolute;
+    z-index:111;
+}
+/*左侧logo*/
+.logo{
+    flex:2;
+    height: 100%;
+    padding-left: 40px;
+    float: left;
+}
+.logo .logo-l {
+    display: inline-block;
+    float: left;
+    width: 354px;
+    height: 64px;
+    background: url(../images/logo1--01.png) no-repeat;
+}
+.logo .logo-r {
+    float: left;
+    height: 100%;
+    line-height: 64px;
+    color:#fff;
+    font-size:16px;
+    /*padding-left: 10px;*/
+}
+
+/*中间列表区*/
+.list {
+    flex:2;
+    height: 100%;
+    line-height: 64px;
+    text-align:center;
+}
+.list ul {
+    display: inline;
+    height: 100%;
+    margin:0 auto;
+}
+.list li {
+    display: inline-block;
+    /*float: left;*/
+    width: 100px;
+}
+.list li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align:center;
+    color:#fff;
+    font-size:18px;
+}
+.list li a:hover{
+    color:#00ADEE;
+}
+/*右侧登录信息*/
+.users {
+    padding-right:0.5%;
+    flex:2;
+    height: 100%;
+    width:15%;
+}
+.users > div {
+	width:25%;
+	float:right;
+    height: 100%;
+    line-height: 64px;
+}
+.users .userout {
+    background: url(../images/quit.png) no-repeat;
+}
+.users > div a {
+    display: inline-block;
+    height: 100%;
+    color:#fff;
+}
+.users > div a:hover{
+	 text-decoration:underline;
+}
+@media screen and(max-width: 768px) {
+    #main {
+        width: 100%;
+        margin:0 auto;
+        background: url(../images/bg.png) no-repeat;
+        -webkit-background-size: contain;
+        background-size:contain ;
+    }
+    .logo {
+        margin-left: 20px;
+    }
+    .logo .logo-r {
+        font-size:12px;
+    }
+}
+
+
+
+

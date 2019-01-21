@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.dao.YsljhcxMapper">
+
+    <!--用水户（初始化查询）-->
+    <select id="userInitQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM (
+        SELECT DISTINCT B1.*,B2.NSRMC,B2.QSKSZD,B2.SYQY_DM,B2.SHXYDM FROM (
+        SELECT A1.YSLJHXH
+        ,A1.YSLJHZ
+        ,A1.YSLSHZ
+        ,A1.SBRY_DM
+        ,TO_CHAR(A1.SBRQ, 'yyyy-mm-dd HH24:mi:ss') SBRQ
+        ,A1.SBND
+        ,A1.SHJG_DM
+        ,A1.SHRY_DM
+        ,A1.SHRQ
+        ,A1.SHZT_DM
+        ,A2.SHZTMC
+        ,A1.YXBZ
+        FROM SB_YSLJHB A1,DM_GY_SHZT A2
+        WHERE A1.YXBZ = 'Y'
+        AND A1.SHZT_DM = A2.SHZT_DM(+))B1,
+        (SELECT B1.*,B2.* FROM(
+        SELECT A1.*,A2.YSHDJXH FROM DJ_SYXXB A1,DJ_YSHSYGXB A2
+        WHERE 1 = 1 AND A1.YXBZ = 'Y' AND A1.SYBH = A2.SYBH(+))B1,DJ_YSHXXB B2
+        WHERE B1.YSHDJXH IS NOT NULL
+        AND B1.YSHDJXH = B2.YSHDJXH(+))B2
+        WHERE B1.SBRY_DM = B2.YSHZH(+))C1 WHERE 1 = 1
+        AND C1.SBRY_DM LIKE '%' || #{svo.sbry_dm,jdbcType=VARCHAR} || '%'
+        <if test="svo.nsrmc != null">
+            AND C1.NSRMC LIKE '%' || #{svo.nsrmc,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="svo.sbnd != null">
+            AND C1.SBND = #{svo.sbnd,jdbcType=VARCHAR}
+        </if>
+        ORDER BY C1.SBRQ DESC
+    </select>
+    <!--核查岗(查看区域信息)-->
+    <select id="inspectInitQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM (
+        SELECT DISTINCT B1.*,B2.NSRMC,B2.QSKSZD,B2.SYQY_DM,B2.SHXYDM FROM (
+        SELECT A1.YSLJHXH
+        ,A1.YSLJHZ
+        ,A1.YSLSHZ
+        ,A1.SBRY_DM
+        ,TO_CHAR(A1.SBRQ, 'yyyy-mm-dd HH24:mi:ss') SBRQ
+        ,A1.SBND
+        ,A1.SHJG_DM
+        ,A1.SHRY_DM
+        ,A1.SHRQ
+        ,A1.SHZT_DM
+        ,A2.SHZTMC
+        ,A1.YXBZ
+        FROM SB_YSLJHB A1,DM_GY_SHZT A2
+        WHERE A1.YXBZ = 'Y'
+        AND A1.SHZT_DM = A2.SHZT_DM(+))B1,
+        (SELECT B1.*,B2.* FROM(
+        SELECT A1.*,A2.YSHDJXH FROM DJ_SYXXB A1,DJ_YSHSYGXB A2
+        WHERE 1 = 1 AND A1.YXBZ = 'Y' AND A1.SYBH = A2.SYBH(+))B1,DJ_YSHXXB B2
+        WHERE B1.YSHDJXH IS NOT NULL
+        AND B1.YSHDJXH = B2.YSHDJXH(+))B2
+        WHERE B1.SBRY_DM = B2.YSHZH(+))C1 WHERE 1 = 1
+        <if test="svo.nsrmc != null">
+            AND C1.NSRMC like '%' || #{svo.nsrmc,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="svo.syqy_dm != null">
+          AND  C1.SYQY_DM IN (#{svo.syqy_dm,jdbcType=VARCHAR})
+        </if>
+        <if test="svo.syqy_dm == null">
+          AND C1.SYQY_DM IN ('03','04')
+        </if>
+        <if test="svo.sbnd != null">
+          AND C1.SBND = #{svo.sbnd,jdbcType=VARCHAR}
+        </if>
+        ORDER BY C1.SBRQ DESC
+    </select>
+    <!--用水量计划（初始化查询）-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM (
+        SELECT DISTINCT B1.*,B2.NSRMC,B2.QSKSZD,B2.SYQY_DM,B2.SHXYDM FROM (
+        SELECT A1.YSLJHXH
+        ,A1.YSLJHZ
+        ,A1.YSLSHZ
+        ,A1.SBRY_DM
+        ,TO_CHAR(A1.SBRQ, 'yyyy-mm-dd HH24:mi:ss') SBRQ
+        ,A1.SBND
+        ,A1.SHJG_DM
+        ,A1.SHRY_DM
+        ,A1.SHRQ
+        ,A1.SHZT_DM
+        ,A2.SHZTMC
+        ,A1.YXBZ
+        FROM SB_YSLJHB A1,DM_GY_SHZT A2
+        WHERE A1.YXBZ = 'Y'
+        AND A1.SHZT_DM = A2.SHZT_DM(+))B1,
+        (SELECT B1.*,B2.* FROM(
+        SELECT A1.*,A2.YSHDJXH FROM DJ_SYXXB A1,DJ_YSHSYGXB A2
+        WHERE 1 = 1 AND A1.YXBZ = 'Y' AND A1.SYBH = A2.SYBH(+))B1,DJ_YSHXXB B2
+        WHERE B1.YSHDJXH IS NOT NULL
+        AND B1.YSHDJXH = B2.YSHDJXH(+))B2
+        WHERE B1.SBRY_DM = B2.YSHZH(+))C1 WHERE 1 = 1
+        <if test="svo.nsrmc != null">
+            AND C1.NSRMC like '%' || #{svo.nsrmc,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="svo.sbnd != null">
+            AND C1.SBND = #{svo.sbnd,jdbcType=VARCHAR}
+        </if>
+        ORDER BY C1.SBRQ DESC
+    </select>
+    <!--根据用水量计划序号查询(用水户年度计划用水量)-->
+    <select id="conditionQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM SB_YSLJHMXB T1
+        WHERE T1.YXBZ = 'Y'
+        <if test="svo.ysljhxh != null">
+            AND T1.YSLJHXH LIKE '%' || #{svo.ysljhxh,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--审核明细查询(已审核的用水户年度计划明细)-->
+    <select id="auditDetailQuery" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM SB_YSLJHMXB T1
+              WHERE T1.YXBZ = 'Y'
+                    AND T1.YSLJHZ IS NULL
+        <if test="svo.ysljhxh != null">
+            AND T1.YSLJHXH LIKE '%' || #{svo.ysljhxh,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--年度（菜单）-->
+    <select id="yearMenu" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+      SELECT TRUNC(DBMS_RANDOM.VALUE(0,100)) ID,T1.SBND TEXT
+        FROM SB_YSLJHB T1 WHERE T1.YXBZ = 'Y' GROUP BY T1.SBND
+    </select>
+    <!--水源区域(菜单-查看区域)-->
+    <select id="syqycd" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+        SELECT * FROM (
+        SELECT TRIM(T1.SYQY_DM) ID,T1.SYQYSMC TEXT FROM DM_GY_SYQY T1 WHERE T1.YXBZ = 'Y')H1
+        WHERE 1 = 1
+        <if test="svo.syqy_dm != null">
+            AND H1.ID = #{svo.syqy_dm,jdbcType=VARCHAR}
+        </if>
+        <if test="svo.syqy_dm == null">
+            AND H1.ID IN ('03','04')
+        </if>
+    </select>
+    <!--水源区域(菜单-查看所有)-->
+    <select id="waterAreaMenu" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsljhcxVO">
+      SELECT TRIM(T1.SYQY_DM) ID,T1.SYQYSMC TEXT FROM DM_GY_SYQY T1 WHERE T1.YXBZ = 'Y'
+    </select>
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkUserGw" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,dm_gy_gwys t2
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t2.acl_station_id
+        and   instr(#{gwdmstr},'['||t2.gw_dm||']')>0
+        and   t0.user_id =#{userid}
+    </select>
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkPemission" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,acl_station t3
+             ,acl_station_role_xref t5
+             ,acl_role_resource_xref t6
+             ,acl_menu_resource t7
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t3.station_id
+        and   t3.station_id = t5.station_id
+        and   t5.role_id = t6.role_id
+        and   t6.menu_resource_id = t7.menu_resource_id
+        and   t7.RESOURCE_MODULE like '%'||#{uri}||'%'
+        and   t0.user_id =#{userid}
+    </select>
+</mapper>

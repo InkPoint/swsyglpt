@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="RootConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>[%date] %level %file:[%line] %logger %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="TxtFileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../logs/logic.%d{yyyy-MM-dd}.txt</fileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date, %level, %logger, %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.gxhs.gat" level="debug"/>
+    <logger name="com.ts.acl" level="debug"/>
+    <logger name="java.sql" level="debug"/>
+    <!--基本信息维护-->
+    <logger name="com.xasw.jbxxwh" level="debug"/>
+    <!--用水计划-->
+    <logger name="com.xasw.ysjh" level="debug"/>
+
+    <logger name="com.xasw.yslhd" level="debug"/>
+    <!--税款信息-->
+    <logger name="com.xasw.skxx" level="debug"/>
+    <!--总和查询-->
+    <logger name="com.xasw.zhcx" level="debug"/>
+
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="RootConsoleAppender"/>
+        <appender-ref ref="TxtFileAppender"/>
+    </root>
+</configuration>
+

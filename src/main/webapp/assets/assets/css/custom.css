@@ -1,0 +1,58 @@
+/* 焦点图样式 */
+#owl-example .item{
+	padding: 10px 0px;
+	margin: 10px;
+	color: #FFF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-align: center;
+}
+#owl-example .item img{
+	width: auto;
+	margin: 0 auto;
+	display: block;
+}
+#owl-example .item h3{
+	font-size: 22px;
+    font-weight: bold;
+	margin: 10px 0 0;
+}
+#owl-example .item h4{
+	margin: 5px 0 0;
+	font-size: 18px;
+}
+.item h1{
+	margin: inherit;
+}
+
+.orange{
+	background: #ff8a3c;
+}
+.darkCyan{
+	background: #42bdc2;
+}
+.forestGreen{
+	background: #7fc242;
+}
+.yellow {
+	background: #ffd800;
+}
+.dodgerBlue {
+	background: #388bd1;
+}
+.skyBlue {
+	background: #a1def8;
+}
+.zombieGreen {
+	background: #3fbf79;
+}
+.violet {
+	background: #db6ac5;
+}
+.yellowLight {
+	background: #fee664;
+}
+.steelGray {
+	background: #cad3d0;
+}

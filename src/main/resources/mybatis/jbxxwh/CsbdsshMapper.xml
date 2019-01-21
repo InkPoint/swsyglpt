@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.jbxxwh.dao.CsbdsshMapper">
+
+    <!--初始化查询表底数(审核情况-查看区域信息)-->
+    <select id="initQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    SELECT * FROM (
+       SELECT T1.CSBDJXH,T1.YSHDJXH,T2.QSKSZD,T1.SBWZBH,T1.SBBH,T2.SYQY_DM,T1.YBDS,T1.SBZT_DM,T3.SBZTMC
+              ,T1.XBDS,T1.SBGZLX_DM,T1.SBGZYY,T1.SBRY_DM,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+              ,T1.CZLX_DM,T1.DSZPURL,T1.SHZT_DM,T1.SHJG,T1.SHJG_DM,T1.SHRY_DM,T1.SHRQ
+              ,T1.XGRY_DM,T1.XGRQ,T4.SHZTMC,T1.YXBZ,T1.YBCBRQ,T1.XBCBRQ
+                  FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3,DM_GY_SHZT T4
+                     WHERE T1.YXBZ = 'Y'
+                           AND T1.SYBH = T2.SYBH(+)
+                           AND T1.SBZT_DM = T3.SBZT_DM(+)
+                           AND T1.SHZT_DM = T4.SHZT_DM(+)
+                           ORDER BY T1.SBRQ DESC) S1 WHERE 1=1
+            <if test="svo.qskszd != null">
+                AND S1.QSKSZD LIKE '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.csbdjxh != null">
+                AND S1.CSBDJXH LIKE '%' || #{svo.csbdjxh,jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="svo.syqy_dm != null">
+                AND S1.SYQY_DM = #{svo.syqy_dm,jdbcType=VARCHAR}
+            </if>
+            <if test="svo.syqy_dm == null">
+                AND S1.SYQY_DM IN ('03','04')
+            </if>
+    </select>
+    <!--数据回执(根据初始表登记序号)-->
+    <select id="dataReceipt" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT * FROM (
+        SELECT T1.CSBDJXH,T1.YSHDJXH,T2.QSKSZD,T1.SBWZBH,T1.SBBH,T2.SYQY_DM,T1.YBDS,T1.SBZT_DM,T3.SBZTMC
+        ,T1.XBDS,T1.SBGZLX_DM,T1.SBGZYY,T1.SBRY_DM,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+        ,T1.CZLX_DM,T1.DSZPURL,T1.SHZT_DM,T1.SHJG,T1.SHJG_DM,T1.SHRY_DM,T1.SHRQ
+        ,T1.XGRY_DM,T1.XGRQ,T4.SHZTMC,T1.YXBZ,T1.YBCBRQ,T1.XBCBRQ
+        FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3,DM_GY_SHZT T4
+        WHERE T1.YXBZ = 'Y'
+        AND T1.SYBH = T2.SYBH(+)
+        AND T1.SBZT_DM = T3.SBZT_DM(+)
+        AND T1.SHZT_DM = T4.SHZT_DM(+)
+        ORDER BY T1.SBRQ DESC) S1 WHERE 1=1
+        <if test="svo.csbdjxh != null">
+            AND S1.CSBDJXH LIKE '%' || #{svo.csbdjxh,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--保存审核结果-->
+    <update id="saveAudit" parameterType="java.util.HashMap">
+        UPDATE DJ_CSBDSSB T
+                 SET  T.YBDS = #{svo.ybds,jdbcType=DOUBLE},      --表底数
+                      T.SHJG_DM = #{svo.shjg_dm,jdbcType=VARCHAR},--审核机关代码
+                      T.SHRY_DM = #{svo.shry_dm,jdbcType=VARCHAR},--审核人员代码
+                      T.SHZT_DM = #{svo.shzt_dm,jdbcType=VARCHAR},--审核状态代码
+                      T.SHRQ = sysdate
+               WHERE  T.CSBDJXH = #{svo.csbdjxh,jdbcType=VARCHAR}--初始表登记序号
+    </update>
+    <!--根据初始表底登记序号（查询路径）-->
+    <select id="queryPath" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT T1.DSZPURL FROM  DJ_CSBDSSB T1
+              WHERE  1= 1
+                      AND  T1.DSZPURL IS NOT NULL
+                      AND  T1.CSBDJXH LIKE '%' || #{svo.csbdjxh,jdbcType=VARCHAR} || '%'
+    </select>
+    <!--审核状态(菜单)-->
+    <select id="auditStatus" parameterType="java.util.HashMap" resultType="com.xasw.jbxxwh.model.CsbdsshVO">
+      SELECT T.SHZT_DM ID,T.SHZTMC TEXT FROM DM_GY_SHZT T  WHERE T.YXBZ = 'Y' AND T.SHZT_DM IN ('02','03')
+    </select> <!-- 获取当前登录人的菜单权限-->
+    <select id="checkUserGw" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,dm_gy_gwys t2
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t2.acl_station_id
+        and   instr(#{gwdmstr},'['||t2.gw_dm||']')>0
+        and   t0.user_id =#{userid}
+    </select>
+    <!-- 获取当前登录人的菜单权限-->
+    <select id="checkPemission" parameterType="map"   resultType="map">
+        select 1
+        from acl_user_group t0
+             ,acl_organize_station_xref t1
+             ,acl_station t3
+             ,acl_station_role_xref t5
+             ,acl_role_resource_xref t6
+             ,acl_menu_resource t7
+        where t0.xref_id = t1.xref_id
+        and   t1.station_id = t3.station_id
+        and   t3.station_id = t5.station_id
+        and   t5.role_id = t6.role_id
+        and   t6.menu_resource_id = t7.menu_resource_id
+        and   t7.RESOURCE_MODULE like '%'||#{uri}||'%'
+        and   t0.user_id =#{userid}
+    </select>
+
+    <!--***初始化表底数查询***-->
+    <!--用水户（初始化查询）-->
+    <select id="userInitQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT * FROM (
+        SELECT T1.CSBDJXH,T1.YSHDJXH,T2.QSKSZD,T1.SBWZBH,T1.SBBH,T2.SYQY_DM,T1.YBDS,T1.SBZT_DM,T3.SBZTMC
+        ,T1.XBDS,T1.SBGZLX_DM,T1.SBGZYY,T1.SBRY_DM,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+        ,T1.CZLX_DM,T1.DSZPURL,T1.SHZT_DM,T1.SHJG,T1.SHJG_DM,T1.SHRY_DM,T1.SHRQ
+        ,T1.XGRY_DM,T1.XGRQ,T4.SHZTMC,T1.YXBZ,T1.YBCBRQ,T1.XBCBRQ
+        FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3,DM_GY_SHZT T4
+        WHERE T1.YXBZ = 'Y'
+        AND T1.SYBH = T2.SYBH(+)
+        AND T1.SBZT_DM = T3.SBZT_DM(+)
+        AND T1.SHZT_DM = T4.SHZT_DM(+)
+        ORDER BY T1.SBRQ DESC) S1 WHERE 1=1
+        <if test="svo.sbry_dm != null">
+            AND S1.SBRY_DM = #{svo.sbry_dm,jdbcType=VARCHAR}
+        </if>
+        <if test="svo.qskszd != null">
+            AND S1.QSKSZD LIKE '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <!--核查岗(查看区域信息)-->
+    <select id="inspectInitQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT * FROM (
+        SELECT T1.CSBDJXH,T1.YSHDJXH,T2.QSKSZD,T1.SBWZBH,T1.SBBH,T2.SYQY_DM,T1.YBDS,T1.SBZT_DM,T3.SBZTMC
+        ,T1.XBDS,T1.SBGZLX_DM,T1.SBGZYY,T1.SBRY_DM,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+        ,T1.CZLX_DM,T1.DSZPURL,T1.SHZT_DM,T1.SHJG,T1.SHJG_DM,T1.SHRY_DM,T1.SHRQ
+        ,T1.XGRY_DM,T1.XGRQ,T4.SHZTMC,T1.YXBZ,T1.YBCBRQ,T1.XBCBRQ
+        FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3,DM_GY_SHZT T4
+        WHERE T1.YXBZ = 'Y'
+        AND T1.SYBH = T2.SYBH(+)
+        AND T1.SBZT_DM = T3.SBZT_DM(+)
+        AND T1.SHZT_DM = T4.SHZT_DM(+)
+        ORDER BY T1.SBRQ DESC) S1 WHERE 1=1
+        <if test="svo.qskszd != null">
+            AND S1.QSKSZD LIKE '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="svo.syqy_dm != null">
+            AND S1.SYQY_DM = #{svo.syqy_dm,jdbcType=VARCHAR}
+        </if>
+        <if test="svo.syqy_dm == null">
+            AND S1.SYQY_DM IN ('03','04')
+        </if>
+    </select>
+    <!--查询所有-->
+    <select id="queryAll" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT * FROM (
+        SELECT T1.CSBDJXH,T1.YSHDJXH,T2.QSKSZD,T1.SBWZBH,T1.SBBH,T2.SYQY_DM,T1.YBDS,T1.SBZT_DM,T3.SBZTMC
+        ,T1.XBDS,T1.SBGZLX_DM,T1.SBGZYY,T1.SBRY_DM,to_char(T1.SBRQ, 'yyyy-MM-dd') SBRQ
+        ,T1.CZLX_DM,T1.DSZPURL,T1.SHZT_DM,T1.SHJG,T1.SHJG_DM,T1.SHRY_DM,T1.SHRQ
+        ,T1.XGRY_DM,T1.XGRQ,T4.SHZTMC,T1.YXBZ,T1.YBCBRQ,T1.XBCBRQ
+        FROM DJ_CSBDSSB T1,DJ_SYXXB T2,DM_GY_SBZT T3,DM_GY_SHZT T4
+        WHERE T1.YXBZ = 'Y'
+        AND T1.SYBH = T2.SYBH(+)
+        AND T1.SBZT_DM = T3.SBZT_DM(+)
+        AND T1.SHZT_DM = T4.SHZT_DM(+)
+        ORDER BY T1.SBRQ DESC) S1 WHERE 1=1
+        <if test="svo.qskszd != null">
+            AND S1.QSKSZD LIKE '%' || #{svo.qskszd,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+</mapper>

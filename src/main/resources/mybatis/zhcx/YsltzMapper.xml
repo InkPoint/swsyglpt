@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xasw.zhcx.YsltzMapper">
+    <!--水源区域（下来菜单）-->
+    <select id="gwdm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t2.gw_dm gwdm,t2.gwmc
+        from acl_user_group            t0,
+        acl_organize_station_xref t1,
+        dm_gy_gwys                t2,
+        acl_user                  u
+        where t0.xref_id = t1.xref_id
+        and t1.station_id = t2.acl_station_id
+        and t0.user_id = u.user_id
+        and u.user_code ='${usercode}'
+    </select>
+    <!--年度（下来菜单）-->
+    <select id="ndcd" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsltzVO">
+        select to_char(sysdate,'yyyy')-0 id,  to_char(sysdate,'yyyy')-0 text from dual
+        union all
+        select to_char(sysdate,'yyyy')-1, to_char(sysdate,'yyyy')-1 from dual
+        union all
+        select to_char(sysdate,'yyyy')-2, to_char(sysdate,'yyyy')-2 from dual
+        union all
+        select to_char(sysdate,'yyyy')-3, to_char(sysdate,'yyyy')-3 from dual
+        union all
+        select to_char(sysdate,'yyyy')-4, to_char(sysdate,'yyyy')-4 from dual
+    </select>
+
+    <!--水源区域（下来菜单）-->
+    <select id="syqycd" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsltzVO">
+        select '00' id ,'---全部---' text from dual
+        union all
+        select t.syqy_dm id,t.syqysmc text from dm_gy_syqy t where t.yxbz ='Y'and t.syzt_dm='01'
+    </select>
+
+    <!--水源类型(下拉菜单)-->
+    <select id="sylxcd" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsltzVO">
+        select '00' id ,'---全部---' text from dual
+        union all
+        select t.sylx_dm id, t.sylxmc text from dm_gy_sylx t where t.yxbz = 'Y'
+    </select>
+
+    <!--用水量台账查询-->
+    <select id="selectAll" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsltzVO">
+        select r.xxcjid,
+        r.nsrsbh,
+        r.nsrmc,
+        r.nd ssnf,
+        (r.yhdqsl + r.ehdqsl + r.shdqsl + r.fhdqsl) ndqsl,
+        (r.yskjnje + r.eskjnje + r.sskjnje + r.fskjnje) ndskje,
+        (r.yhcskje + r.ehcskje + r.shcskje + r.fhcskje) ndhcje,
+        r.yhdqsl,
+        r.yskjnje,
+        r.yhcskje,
+        r.ehdqsl,
+        r.eskjnje,
+        r.ehcskje,
+        r.shdqsl,
+        r.sskjnje,
+        r.shcskje,
+        r.fhdqsl,
+        r.fskjnje,
+        r.fhcskje
+        from (select t.xxcjid,
+        t.nsrsbh,
+        t.nsrmc,
+        '2018' nd,
+        nvl(case
+        when r.jdbz = '1' then
+        r.bqqsl
+        end,
+        0) yhdqsl,
+        nvl(case
+        when r.jdbz = '1' then
+        r.skjnje
+        end,
+        0) yskjnje,
+        nvl(case
+        when r.jdbz = '1' then
+        r.hcskje
+        end,
+        0) yhcskje,
+
+        nvl(case
+        when r.jdbz = '2' then
+        r.bqqsl
+        end,
+        0) ehdqsl,
+        nvl(case
+        when r.jdbz = '2' then
+        r.skjnje
+        end,
+        0) eskjnje,
+        nvl(case
+        when r.jdbz = '2' then
+        r.hcskje
+        end,
+        0) ehcskje,
+
+        nvl(case
+        when r.jdbz = '3' then
+        r.bqqsl
+        end,
+        0) shdqsl,
+        nvl(case
+        when r.jdbz = '3' then
+        r.skjnje
+        end,
+        0) sskjnje,
+        nvl(case
+        when r.jdbz = '3' then
+        r.hcskje
+        end,
+        0) shcskje,
+
+        nvl(case
+        when r.jdbz = '4' then
+        r.bqqsl
+        end,
+        0) fhdqsl,
+        nvl(case
+        when r.jdbz = '4' then
+        r.skjnje
+        end,
+        0) fskjnje,
+        nvl(case
+        when r.jdbz = '4' then
+        r.hcskje
+        end,
+        0) fhcskje
+        from (select t1.xxcjid,
+        t1.nsrsbh,
+        t1.syqy,
+        t1.sylx,
+        t1.jdbz,
+        sum(nvl(t1.bqqsl, 0)) bqqsl,
+        sum(nvl(t1.skjnje, 0)) skjnje,
+        sum(nvl(t1.hcskje, 0)) hcskje
+        from (select t.nsrsbh,
+        t.syqy,
+        t.sylx,
+        t1.*,
+        t2.skjnje,
+        t2.hcskje
+        from cx_ysltz t, cx_ysltzmx t1, jh_skslxxjhb t2
+        where t.xxcjid = t1.xxcjid(+)
+        and t.hdsbh = t2.hdsbh(+)
+        and t.yxbz = 'Y'
+        and t.yxbz = 'Y'
+        and t.qslssqq>=
+        to_date('${svo.ssnf}' || '01-01', 'yyyy-mm-dd')
+        and t.qslssqz &lt;
+        to_date('${svo.ssnf}' || '12-31', 'yyyy-mm-dd')+1
+        <if test="svo.lrr != null">
+            and t.lrr like  '%${svo.lrr}%'
+        </if>
+        <if test="svo.shr_dm != null">
+            and t.shr_dm like '%${svo.shr_dm}%'
+        </if>
+        <if test="svo.nsrsbh != null">
+            and t.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc != null">
+            and t.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        <if test="svo.syqydm != null">
+            and t.syqy like '%${svo.syqydm}%'
+        </if>
+        <if test="svo.sylxdm != null">
+            and t.sylx like '%${svo.sylxdm}%'
+        </if>
+        ) t1
+        where t1.jdbz is not null
+        group by t1.nsrsbh, t1.xxcjid, t1.syqy, t1.sylx, t1.jdbz) r,
+        hd_yslbshd t
+        where r.xxcjid = t.xxcjid(+)
+        order by r.nsrsbh
+        ) r
+        order by r.nsrsbh
+    </select>
+    <!--信息明细(表数据)-->
+    <select id="querytab" parameterType="java.util.Map" resultType="com.xasw.zhcx.model.YsltzVO">
+        select *from HD_YSLBSHDMX t where t.xxcjid='${svo.xxcjid}' and t.yxbz='Y' order by t.lrsj desc
+    </select>
+
+    <!--根据信息采集ID查询（编辑）-->
+    <select id="editTable" parameterType="java.util.HashMap" resultType="com.xasw.zhcx.model.YsltzVO">
+        select * from HD_YSLBSHD t where t.xxcjid ='${svo.xxcjid}'
+    </select>
+
+    <!--核定书信息-->
+    <select id="hdsxx" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select t.*,
+        a.sylxmc,
+        b.qyshymc,
+        c.dxsccqlxmc,
+        d.sfmc,
+        e.tsyslbmc,
+        f.hdjglxmc,
+        g.syqysmc syqymc
+        from hd_yslbshd     t,
+        dm_gy_sylx     a,
+        dm_gy_qyshy    b,
+        dm_gy_dxsccqlx c,
+        dm_gy_sf       d,
+        dm_gy_tsyslb   e,
+        dm_gy_hdjglx   f,
+        dm_gy_syqy     g
+        where t.sylx = a.sylx_dm(+)
+        and t.qyshy = b.qyshy_dm(+)
+        and t.dxsccqlx = c.dxsccqlx_dm(+)
+        and t.dxsqsddgsgw = d.sf_dm(+)
+        and t.tsyslb = e.tsyslb_dm(+)
+        and t.hdjglx_dm = f.hdjglx_dm(+)
+        and t.syqy = g.syqy_dm(+)
+        and t.yxbz = 'Y'
+        and t.xxcjid = '${xxcjid}'
+    </select>
+
+    <!--核定书信息明细(表数据)-->
+    <select id="hdsmx" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select * from HD_YSLBSHDMX t where t.xxcjid='${xxcjid}' and t.yxbz='Y' order by t.lrsj desc
+    </select>
+
+    <!--用水量历年情况分析-->
+    <select id="nfyslqsQuery"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select b.ysnf, nvl(a.sylxysl,0) sylxysl from (select
+        to_char(t1.qslssqq, 'yyyy') ysnf,sum(nvl(t2.bqqsl, 0)) as sylxysl
+        from cx_ysltz t1, cx_ysltzmx t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.nsrsbh!=null and svo.nsrsbh != ''">
+            and t1.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc!=null and svo.nsrmc != ''">
+            and t1.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   to_char(sysdate,'yyyy')
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   to_char(sysdate,'yyyy')-10
+        </if>
+
+
+
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   #{svo.ssnf}
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   #{svo.ssnf}-10
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != ''">
+            and t1.syqy like '%${svo.syqydm}%'
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != ''">
+            and t1.sylx like '%${svo.sylxdm}%'
+        </if>
+        and t2.jdbz is not null
+        group by to_char(t1.qslssqq, 'yyyy'))a ,(
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            select to_char(sysdate,'yyyy') -0 ysnf from dual
+            union
+            select to_char(sysdate,'yyyy') -1 from dual
+            union
+            select to_char(sysdate,'yyyy') -2 from dual
+            union
+            select to_char(sysdate,'yyyy') -3 from dual
+            union
+            select to_char(sysdate,'yyyy') -4 from dual
+            union
+            select to_char(sysdate,'yyyy') -5 from dual
+            union
+            select to_char(sysdate,'yyyy') -6 from dual
+            union
+            select to_char(sysdate,'yyyy') -7 from dual
+            union
+            select to_char(sysdate,'yyyy') -8 from dual
+            union
+            select to_char(sysdate,'yyyy') -9 from dual
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            select #{svo.ssnf} -0 ysnf from dual
+            union
+            select #{svo.ssnf} -1 from dual
+            union
+            select #{svo.ssnf} -2 from dual
+            union
+            select #{svo.ssnf} -3 from dual
+            union
+            select #{svo.ssnf} -4 from dual
+            union
+            select #{svo.ssnf} -5 from dual
+            union
+            select #{svo.ssnf} -6 from dual
+            union
+            select #{svo.ssnf} -7 from dual
+            union
+            select #{svo.ssnf} -8 from dual
+            union
+            select #{svo.ssnf} -9 from dual
+        </if>
+        ) b where a.ysnf(+)=b.ysnf order by b.ysnf
+    </select>
+
+    <!--季度用水量同比环比-->
+    <select id="ylstbhb"  parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select a.*,b.*,
+        decode(b.upqsl1q,0,0,round(a.currqsl1q/b.upqsl1q*100,2)) tb1,
+        decode(b.upqsl2q,0,0,round(a.currqsl2q/b.upqsl2q*100,2)) tb2,
+        decode(b.upqsl3q,0,0,round(a.currqsl3q/b.upqsl3q*100,2)) tb3,
+        decode(b.upqsl4q,0,0,round(a.currqsl4q/b.upqsl4q*100,2)) tb4,
+        decode(b.upqsl4q,0,0,round(a.currqsl1q/b.upqsl4q*100,2)) hb1,
+        decode(a.currqsl1q,0,0,round(a.currqsl2q/a.currqsl1q*100,2)) hb2,
+        decode(a.currqsl2q,0,0,round(a.currqsl3q/a.currqsl2q*100,2)) hb3,
+        decode(a.currqsl3q,0,0,round(a.currqsl4q/a.currqsl3q*100,2)) hb4
+        from
+        (select
+        nvl(sum((case when t2.jdbz = 1 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl1q,
+        nvl(sum((case when t2.jdbz = 2 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl2q,
+        nvl(sum((case when t2.jdbz = 3 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl3q,
+        nvl(sum((case when t2.jdbz = 4 then nvl(t2.bqqsl, 0) else '0' end)),0) as currqsl4q
+        from cx_ysltz t1, cx_ysltzmx t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.nsrsbh!=null and svo.nsrsbh != ''">
+            and t1.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc!=null and svo.nsrmc != ''">
+            and t1.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   to_char(sysdate,'yyyy')
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   to_char(sysdate,'yyyy')-10
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   #{svo.ssnf}
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   #{svo.ssnf}-10
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != ''">
+            and t1.syqy like '%${svo.syqydm}%'
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != ''">
+            and t1.sylx like '%${svo.sylxdm}%'
+        </if>
+        and t2.jdbz is not null
+        ) a,
+        (
+        select
+        nvl(sum((case when t2.jdbz = 1 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl1q,
+        nvl(sum((case when t2.jdbz = 2 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl2q,
+        nvl(sum((case when t2.jdbz = 3 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl3q,
+        nvl(sum((case when t2.jdbz = 4 then nvl(t2.bqqsl, 0) else '0' end)),0) as upqsl4q
+        from cx_ysltz t1, cx_ysltzmx t2
+        where t1.yxbz = 'Y'
+        and t2.yxbz = 'Y'
+        and t1.xxcjid(+) = t2.xxcjid
+        <if test="svo.nsrsbh!=null and svo.nsrsbh != ''">
+            and t1.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc!=null and svo.nsrmc != ''">
+            and t1.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        <if test="svo.ssnf==null or svo.ssnf == ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   to_char(sysdate,'yyyy')
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   to_char(sysdate,'yyyy')-10
+        </if>
+        <if test="svo.ssnf!=null and svo.ssnf != ''">
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[<=]]>   #{svo.ssnf}
+            and to_char(t1.qslssqq, 'yyyy') <![CDATA[>=]]>   #{svo.ssnf}-10
+        </if>
+        <if test="svo.syqydm!=null and svo.syqydm != ''">
+            and t1.syqy like '%${svo.syqydm}%'
+        </if>
+        <if test="svo.sylxdm!=null and svo.sylxdm != ''">
+            and t1.sylx like '%${svo.sylxdm}%'
+        </if>
+        and t2.jdbz is not null
+        ) b
+    </select>
+
+    <!--用水量台账导出-->
+    <select id="doExcel" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        with temp_ysltz as(
+        select r.xxcjid,
+        r.nsrsbh,
+        r.nsrmc,
+        r.nd ssnf,
+        (r.yhdqsl + r.ehdqsl + r.shdqsl + r.fhdqsl) ndqsl,
+        (r.yskjnje + r.eskjnje + r.sskjnje + r.fskjnje) ndskje,
+        (r.yhcskje + r.ehcskje + r.shcskje + r.fhcskje) ndhcje,
+        r.yhdqsl,
+        r.yskjnje,
+        r.yhcskje,
+        r.ehdqsl,
+        r.eskjnje,
+        r.ehcskje,
+        r.shdqsl,
+        r.sskjnje,
+        r.shcskje,
+        r.fhdqsl,
+        r.fskjnje,
+        r.fhcskje
+        from (select t.xxcjid,
+        t.nsrsbh,
+        t.nsrmc,
+        '2018' nd,
+        nvl(case
+        when r.jdbz = '1' then
+        r.bqqsl
+        end,
+        0) yhdqsl,
+        nvl(case
+        when r.jdbz = '1' then
+        r.skjnje
+        end,
+        0) yskjnje,
+        nvl(case
+        when r.jdbz = '1' then
+        r.hcskje
+        end,
+        0) yhcskje,
+
+        nvl(case
+        when r.jdbz = '2' then
+        r.bqqsl
+        end,
+        0) ehdqsl,
+        nvl(case
+        when r.jdbz = '2' then
+        r.skjnje
+        end,
+        0) eskjnje,
+        nvl(case
+        when r.jdbz = '2' then
+        r.hcskje
+        end,
+        0) ehcskje,
+
+        nvl(case
+        when r.jdbz = '3' then
+        r.bqqsl
+        end,
+        0) shdqsl,
+        nvl(case
+        when r.jdbz = '3' then
+        r.skjnje
+        end,
+        0) sskjnje,
+        nvl(case
+        when r.jdbz = '3' then
+        r.hcskje
+        end,
+        0) shcskje,
+
+        nvl(case
+        when r.jdbz = '4' then
+        r.bqqsl
+        end,
+        0) fhdqsl,
+        nvl(case
+        when r.jdbz = '4' then
+        r.skjnje
+        end,
+        0) fskjnje,
+        nvl(case
+        when r.jdbz = '4' then
+        r.hcskje
+        end,
+        0) fhcskje
+        from (select t1.xxcjid,
+        t1.nsrsbh,
+        t1.syqy,
+        t1.sylx,
+        t1.jdbz,
+        sum(nvl(t1.bqqsl, 0)) bqqsl,
+        sum(nvl(t1.skjnje, 0)) skjnje,
+        sum(nvl(t1.hcskje, 0)) hcskje
+        from (select t.nsrsbh,
+        t.syqy,
+        t.sylx,
+        t1.*,
+        t2.skjnje,
+        t2.hcskje
+        from cx_ysltz t, cx_ysltzmx t1, jh_skslxxjhb t2
+        where t.xxcjid = t1.xxcjid(+)
+        and t.hdsbh = t2.hdsbh(+)
+        and t.yxbz = 'Y'
+        and t.yxbz = 'Y'
+        and t.qslssqq>=
+        to_date('${svo.ssnf}' || '01-01', 'yyyy-mm-dd')
+        and t.qslssqz &lt;
+        to_date('${svo.ssnf}' || '12-31', 'yyyy-mm-dd')+1
+        <if test="svo.lrr != null">
+            and t.lrr like  '%${svo.lrr}%'
+        </if>
+        <if test="svo.shr_dm != null">
+            and t.shr_dm like '%${svo.shr_dm}%'
+        </if>
+        <if test="svo.nsrsbh != null">
+            and t.nsrsbh like '%${svo.nsrsbh}%'
+        </if>
+        <if test="svo.nsrmc != null">
+            and t.nsrmc like '%${svo.nsrmc}%'
+        </if>
+        <if test="svo.syqydm != null">
+            and t.syqy like '%${svo.syqydm}%'
+        </if>
+        <if test="svo.sylxdm != null">
+            and t.sylx like '%${svo.sylxdm}%'
+        </if>
+        ) t1
+        where t1.jdbz is not null
+        group by t1.nsrsbh, t1.xxcjid, t1.syqy, t1.sylx, t1.jdbz) r,
+        hd_yslbshd t
+        where r.xxcjid = t.xxcjid(+)
+        order by r.nsrsbh
+        ) r
+        order by r.nsrsbh
+        )
+        select  * from temp_ysltz
+        union all
+        select '',
+        '',
+        '',
+        '合计',
+        sum(nvl(s.ndqsl, 0)) ndqsl,
+        sum(nvl(s.ndskje, 0)) ndskje,
+        sum(nvl(s.ndhcje, 0)) ndhcje,
+        sum(nvl(s.yhdqsl, 0)) yhdqsl,
+        sum(nvl(s.yskjnje, 0)) yskjnje,
+        sum(nvl(s.yhcskje, 0))yhcskje,
+        sum(nvl(s.ehdqsl, 0)) ehdqsl,
+        sum(nvl(s.eskjnje, 0)) eskjnje,
+        sum(nvl(s.ehcskje, 0)) ehcskje,
+        sum(nvl(s.shdqsl, 0)) shdqsl,
+        sum(nvl(s.sskjnje, 0)) sskjnje,
+        sum(nvl(s.shcskje, 0)) shcskje,
+        sum(nvl(s.fhdqsl, 0)) fhdqsl,
+        sum(nvl(s.fskjnje, 0)) fskjnje,
+        sum(nvl(s.fhcskje, 0)) fhcskjee
+        from temp_ysltz s
+    </select>
+
+
+</mapper>
